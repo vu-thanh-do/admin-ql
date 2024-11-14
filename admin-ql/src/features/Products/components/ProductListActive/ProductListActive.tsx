@@ -2,7 +2,7 @@ import { Button as ButtonAntd, Table, Tooltip } from 'antd'
 
 import { useState } from 'react'
 import { useAppSelector } from '~/store/hooks'
-import { useGetAllProductActiveQuery } from '~/store/services'
+import { useGetAllProductActiveQuery, useGetAllProductsQuery } from '~/store/services'
 import { RootState } from '~/store/store'
 import { IRoleUser } from '~/types'
 import { useRender } from '../../hooks'
@@ -15,12 +15,17 @@ export const ProductListActive = ({ checkPath }: any) => {
     page: 1,
     limit: 5
   })
-  const { data } = useGetAllProductActiveQuery({
-    _page: options.page,
-    _limit: options.limit
+  const {
+    data: dataProducts,
+    isLoading: loadingProduct,
+    isError: errorProudct
+  } = useGetAllProductsQuery({
+    _page: 1,
+    _limit: 10,
+    query: ''
   })
-
-  const products = data?.docs.map((product: any, index: number) => ({
+  console.log(dataProducts,'data')
+  const products = dataProducts?.data?.map((product: any, index: number) => ({
     ...product,
     key: product._id,
     index: index + 1
@@ -45,7 +50,7 @@ export const ProductListActive = ({ checkPath }: any) => {
   }
   const hasSelected = selectedRowKeys.length > 1
 
-  const columnsData = useRender(data?.docs || [] ,false, checkPath)
+  const columnsData = useRender(dataProducts?.data || [] ,false, checkPath)
 
   return (
     <div>
@@ -88,7 +93,7 @@ export const ProductListActive = ({ checkPath }: any) => {
           pageSizeOptions: ['5', '10', '15', '20', '25', '30', '40', '50'],
           defaultPageSize: options.limit,
           showSizeChanger: true,
-          total: data && data?.totalDocs,
+          total: dataProducts?.data?.length,
           onChange: (page, pageSize) => {
             setOptions((prev) => ({ ...prev, page, limit: pageSize }))
           }

@@ -35,19 +35,23 @@ const FeatureProducts = ({ data }: FeatureProductsProps) => {
   return (
     <div>
       <Breadcrumb pageName={checkPath ? 'Bảng giá' : 'Xe'}>
-        {isAdmin && !checkPath && (
+        {/* {isAdmin && !checkPath && (
           <Button icon={<PlusIcon />} onClick={() => dispatch(setOpenDrawer(true))}>
             Thêm
           </Button>
-        )}
+        )} */}
+          <Button icon={<PlusIcon />} onClick={() => dispatch(setOpenDrawer(true))}>
+            Thêm
+          </Button>
       </Breadcrumb>
-
+      <FormProduct />
       {isAdmin && !checkPath ? (
         <>
           <Tabs defaultActiveKey='1' items={items} />
           <FormProduct />
         </>
       ) : (
+        
         <ProductListActive checkPath={checkPath}/>
       )}
 

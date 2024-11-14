@@ -21,10 +21,10 @@ const ProductPage = () => {
   if (errorProudct || !dataProducts) {
     return <NotFound />
   }
-
+  console.log(dataProducts,'dataProducts')
   return (
     <div>
-      <FeatureProducts data={dataProducts.docs} />
+      <FeatureProducts data={dataProducts} />
     </div>
   )
 }

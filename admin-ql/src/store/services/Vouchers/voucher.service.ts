@@ -5,22 +5,22 @@ export const VoucherApi = createApi({
   reducerPath: 'voucherApi',
 
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_API
+    baseUrl: import.meta.env.VITE_API,
+    credentials: 'include',
+    prepareHeaders: (headers, { getState }) => {
+      const accessToken = localStorage.getItem('token');
+
+      if (accessToken) {
+        headers.set('authorization', `Bearer ${accessToken}`)
+      }
+      return headers
+    }
   }),
   tagTypes: ['Vouchers'],
   endpoints: (builder) => ({
     getAllVouchers: builder.query<IVoucherDocs, number | string>({
-      query: (page) => `/vouchers?_page=${page}`,
-      providesTags: (result) => {
-        if (result) {
-          const final = [
-            ...result.data.docs.map(({ _id }) => ({ type: 'Vouchers' as const, _id })),
-            { type: 'Vouchers' as const, id: 'LIST' }
-          ]
-          return final
-        }
-        return [{ type: 'Vouchers', id: 'LIST' }]
-      }
+      query: (page) => `/promotions?page=${1}&limit=10`,
+      providesTags: ['Vouchers']
     }),
     getAllVouchersActive: builder.query<IVoucherDocs, number | string>({
       query: () => `/vouchers/active`,
@@ -38,7 +38,7 @@ export const VoucherApi = createApi({
 
     addVoucher: builder.mutation<IVoucher, IVoucher>({
       query: (voucher: IVoucher) => ({
-        url: '/voucher',
+        url: '/promotions',
         method: 'POST',
         body: voucher
       }),
@@ -47,7 +47,7 @@ export const VoucherApi = createApi({
 
     deleteVoucher: builder.mutation<IVoucher, { id: string | number }>({
       query: ({ id }) => ({
-        url: `/voucher/${id}`,
+        url: `/promotions/${id}`,
         method: 'DELETE'
       }),
       invalidatesTags: ['Vouchers']
@@ -57,7 +57,7 @@ export const VoucherApi = createApi({
       query(data) {
         const { _id, ...body } = data
         return {
-          url: `/voucher/${_id}`,
+          url: `/promotions/${_id}`,
           method: 'PUT',
           body
         }

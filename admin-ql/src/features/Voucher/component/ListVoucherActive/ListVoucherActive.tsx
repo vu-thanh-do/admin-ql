@@ -1,5 +1,5 @@
 import { Button as ButtonAntd, Popconfirm, Space, Table } from 'antd'
-import { useDeleteVoucherMutation, useGetAllVouchersActiveQuery } from '~/store/services'
+import { useDeleteVoucherMutation, useGetAllVouchersActiveQuery, useGetAllVouchersQuery } from '~/store/services'
 
 import { IRoleUser } from '~/types'
 import { Loading } from '~/components'
@@ -13,7 +13,7 @@ import { useState } from 'react'
 
 const ListVoucherActive = () => {
   const [currentPage, setCurrentPage] = useState(1)
-  const { data: VoucherActive, isLoading, isError } = useGetAllVouchersActiveQuery(currentPage)
+  const { data: VoucherActive, isLoading, isError } = useGetAllVouchersQuery(0)
 
   const { user } = useAppSelector((state: RootState) => state.persistedReducer.auth)
 
@@ -41,7 +41,7 @@ const ListVoucherActive = () => {
     onChange: onSelectChange
   }
 
-  const vouchers = VoucherActive?.data?.docs?.map((voucher, index) => ({
+  const vouchers = VoucherActive?.data?.map((voucher, index) => ({
     ...voucher,
     key: voucher._id,
     index: index + 1

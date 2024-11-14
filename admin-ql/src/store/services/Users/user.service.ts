@@ -8,7 +8,7 @@ export const userApi = createApi({
     baseUrl: import.meta.env.VITE_API,
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
-      const accessToken = (getState() as RootState).persistedReducer.auth.user?.accessToken
+      const accessToken = localStorage.getItem('token');
 
       if (accessToken) {
         headers.set('authorization', `Bearer ${accessToken}`)
@@ -24,7 +24,7 @@ export const userApi = createApi({
     }),
 
     getAllUserByRole: builder.query<any, { limit: number; page: number; roleName: 'customer' | 'staff' }>({
-      query: (options) => `/users/roles/${options.roleName}?_page=${options.page}&_limit=${options.limit}`,
+      query: (options) => `/users?_page=${options.page}&limit=${options.limit}`,
       providesTags: ['User']
     }),
 

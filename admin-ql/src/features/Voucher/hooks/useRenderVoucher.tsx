@@ -109,11 +109,11 @@ export const useRenderVoucher = () => {
     },
     {
       title: 'Tiêu đề',
-      dataIndex: 'title',
-      key: 'title',
+      dataIndex: 'description',
+      key: 'description',
       width: '25%',
       render: (name: string) => <p className='uppercase'>{name}</p>,
-      ...getColumnSearchProps('title')
+      ...getColumnSearchProps('description')
     },
     {
       title: 'Mã Code',
@@ -124,9 +124,9 @@ export const useRenderVoucher = () => {
       ...getColumnSearchProps('code')
     },
     {
-      title: 'Số lượng mã',
-      dataIndex: 'discount',
-      key: 'discount',
+      title: 'Loại',
+      dataIndex: 'discountType',
+      key: 'discountType',
       width: '15%',
       render: (discount: number) => `${discount}`
     },
@@ -140,19 +140,7 @@ export const useRenderVoucher = () => {
         </span>
       )
     },
-    {
-      title: 'Giảm giá',
-      dataIndex: 'sale',
-      key: 'sale',
-      width: '15%',
-      ...getColumnSearchProps('sale'),
-      sorter: (x: { sale: number }, y: { sale: number }) => {
-        const saleX = x.sale || 0
-        const saleY = y.sale || 0
-        return saleX - saleY
-      },
-      render: (sale: number) => `${formatCurrency(sale)}`
-    }
+  
   ]
 
   /* admin */
@@ -198,5 +186,7 @@ export const useRenderVoucher = () => {
       )
     }
   ]
-  return user && user.role === IRoleUser.ADMIN ? columnsAdmin : columnsStaff
+  // return user && user.role === IRoleUser.ADMIN ? columnsAdmin : columnsStaff/
+  return columnsAdmin 
+
 }

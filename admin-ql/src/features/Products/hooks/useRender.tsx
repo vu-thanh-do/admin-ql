@@ -98,7 +98,7 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
                 { red: !product.is_deleted && !product.is_active }
               )}
             >
-              {product.is_active && !product.is_deleted ? 'Đang hoạt động' : 'Không hoạt động'}
+              {product.busTypeName}
             </Tag>
             <p
               className='hover:underline capitalize truncate cursor-pointer w-[215px]'
@@ -129,8 +129,8 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
         // text
         <div className='gap-x-3 flex items-center justify-start'>
           <img
-            src={product.images[0].url}
-            alt={product.images[0].filename}
+            src={'/bus-bg.jpg'}
+            alt={'/bus-bg.jpg'}
             className='object-cover w-20 h-20 rounded-lg cursor-pointer'
             onClick={() => {
               dispatch(setOpenDrawer(true))
@@ -140,12 +140,12 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
           <div className='flex flex-col gap-0.5 justify-center items-start'>
             <Tag
               color={clsxm(
-                { success: !product.is_deleted && product.is_active },
+                { '#333': !product.is_deleted && product.is_active },
                 { '#333': product.is_deleted },
-                { red: !product.is_deleted && !product.is_active }
+                { '#333': !product.is_deleted && !product.is_active }
               )}
             >
-              {product.is_active && !product.is_deleted ? 'Đang hoạt động' : 'Không hoạt động'}
+              {product.busTypeName}
             </Tag>
             <p
               className='hover:underline capitalize truncate cursor-pointer w-[215px]'
@@ -185,58 +185,36 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
       ...getColumnSearchProps('name' as unknown as IProduct)
     },
     {
-      title: 'Ghế  ',
-      dataIndex: 'sizes',
-      key: 'sizes',
+      title: 'Số Ghế  ',
+      dataIndex: 'seatCapacity',
+      key: 'seatCapacity',
       width: 180,
       render: (sizes: ISizeRefProduct[]) => (
         <>
-          <div className='flex flex-col gap-1'>
-            {sizes?.slice(0, 2).map((size: ISizeRefProduct) => (
-              <div key={size._id} className='relative grid grid-cols-2'>
-                <p className='border-r-graydark w-full pr-3 uppercase border-r border-opacity-50'>{size.name}</p>
-                <p className='w-full pl-3'>{formatCurrency(size.price)}</p>
-              </div>
-            ))}
-          </div>
-          <p className=''>{sizes?.length > 2 && '....'}</p>
+          <p className=''>{sizes}</p>
         </>
       )
     },
     {
-      title: 'Loại Xe ',
+      title: 'price Factor',
       width: 180,
-      render: ({ kindOfRoom }: any) => {
-        console.log(kindOfRoom, 'items')
+      dataIndex: 'seatCapacity',
+      key: 'seatCapacity',
+      render: (seatCapacity: any) => {
         return (
           <>
-            <div className='flex flex-col gap-1'>
-              {kindOfRoom?.slice(0, 2).map((size: ISizeRefProduct) => (
-                <div key={size._id} className='relative grid grid-cols-2'>
-                  <p className='border-r-graydark w-full pr-3 uppercase border-r border-opacity-50'>{size?.name}</p>
-                  <p className='w-full pl-3'>{formatCurrency(size?.price)}</p>
-                </div>
-              ))}
-            </div>
-            <p className=''>{kindOfRoom?.length > 2 && '....'}</p>
+            <p className=''>{seatCapacity}</p>
           </>
         )
       }
     },
 
     {
-      title: 'Tuyến đường  ',
-      dataIndex: 'category',
-      key: 'category',
+      title: 'biển số xe',
+      dataIndex: 'licensePlate',
+      key: 'licensePlate',
       width: 120,
-      render: (category: ICategoryRefProduct) => <p className='capitalize'>{category?.name || 'Không có thông tin'}</p>,
-      filters: productsList.map((product: IProduct) => ({
-        text: product?.category?.name,
-        value: product?.category?.name
-      })),
-      // filteredValue: filteredInfo. || null,
-      onFilter: (value: string, record: IProduct) => record.category.name.includes(value),
-      ellipsis: true
+      render: (category: ICategoryRefProduct) => <p className='capitalize'>{category}</p>
     }
   ]
 
@@ -284,7 +262,6 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
       name: product.name,
       category: product.category._id,
       is_active: product.is_active ? false : true,
-      images: product.images,
       description: product.description,
       sale: product.sale,
       size: product.sizes
@@ -325,9 +302,9 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
                 />
               </Tooltip>
               <Popconfirm
-                title='Thay đổi trạng thái Xe?'
-                description={`Xe sẽ được ${product.is_active ? 'ẩn đi!' : 'hiển thị'}`}
-                onConfirm={() => handleChangeStatusProduct(product)}
+                title='Xóa Xe?'
+                description={`Xe sẽ bị xóa'`}
+                onConfirm={() => handleDeleteProductReal(product._id)}
                 okText='Có'
                 cancelText='Không'
               >
@@ -381,5 +358,6 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
     }
   ]
 
-  return user && user.role === IRoleUser.ADMIN ? columnsAdmin : columnsStaff
+  // return user && user.role === IRoleUser.ADMIN ? columnsAdmin : columnsStaff
+  return columnsAdmin
 }

@@ -22,13 +22,15 @@ const VoucherFeature = () => {
   return (
     <div>
       <Breadcrumb pageName='Vouchers'>
-        {user && user.role === IRoleUser.ADMIN && (
+        {/* {user && user.role === IRoleUser.ADMIN && (
           <Button icon={<PlusIcon />} onClick={() => dispatch(setOpenDrawer(true))}>
             Thêm
           </Button>
-        )}
+        )} */}
+        <Button icon={<PlusIcon />} onClick={() => dispatch(setOpenDrawer(true))}>
+          Thêm
+        </Button>
       </Breadcrumb>
-
       <Tabs defaultActiveKey='1' items={items}></Tabs>
       <VoucherAdd open={openDrawer} />
     </div>

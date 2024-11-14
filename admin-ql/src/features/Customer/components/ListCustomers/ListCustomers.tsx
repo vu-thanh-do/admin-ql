@@ -1,6 +1,6 @@
 import { SearchOutlined } from '@ant-design/icons'
 import type { InputRef } from 'antd'
-import { Button as ButtonAnt, Image, Input, Popconfirm, Space, Table, Tooltip } from 'antd'
+import { Button as ButtonAnt, Image, Input, Modal, Popconfirm, Space, Table, Tooltip } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import type { FilterConfirmProps } from 'antd/es/table/interface'
 import { ColumnType } from 'antd/lib/table'
@@ -25,6 +25,7 @@ type DataIndex = keyof IUserDataType
 export const ListCustomers = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteUser] = useDeleteUserMutation()
   const [options, setoptions] = useState({
     page: 1,
@@ -146,40 +147,25 @@ export const ListCustomers = () => {
       sorter: (a, b) => a.index - b.index
     },
     {
-      title: 'Ảnh',
-      dataIndex: 'avatar',
-      key: 'avatar',
-      render: (avatar: string) => <Image className='!w-[100px] !h-[100px]' src={avatar} />
-    },
-    {
-      title: 'Khách hàng thân thiết',
-      dataIndex: 'loyalCustomers',
-      key: 'loyalCustomers',
-      render: (loyalCustomers: boolean) => {
-        console.log(loyalCustomers)
-        return <span className='capitalize'>{loyalCustomers == true ? 'Thân thiết' : 'Default'}</span>
-      }
-    },
-    {
       title: 'Họ tên',
-      dataIndex: 'username',
-      key: 'username',
-      ...getColumnSearchProps('username'),
+      dataIndex: 'fullName',
+      key: 'fullName',
+      ...getColumnSearchProps('fullName'),
       render: (name: string) => <span className='capitalize'>{name}</span>
     },
     {
-      title: 'Tài khoản',
-      dataIndex: 'account',
-      key: 'account',
-      ...getColumnSearchProps('account'),
-      render: (account: string) => <span>{account}</span>
+      title: 'email',
+      dataIndex: 'email',
+      key: 'email',
+      ...getColumnSearchProps('email'),
+      render: (email: string) => <span>{email}</span>
     },
     {
-      title: 'Giới tính',
-      dataIndex: 'gender',
-      key: 'gender',
+      title: 'SĐT',
+      dataIndex: 'phoneNumber',
+      key: 'phoneNumber',
       width: 90,
-      render: (gender: string) => <span>{gender === 'male' ? 'Nam' : gender === 'female' ? 'Nữ' : 'Khác'}</span>
+      render: (phoneNumber: string) => <span>{phoneNumber}</span>
     },
     {
       // title: <span className='block text-center'>Action</span>,
@@ -188,17 +174,6 @@ export const ListCustomers = () => {
       render: (_: any, customer: IUser) => (
         <div className='flex items-center justify-center'>
           <Space size='middle'>
-            <Tooltip title='Cập nhật thông tin khách hàng này'>
-              <ButtonAnt
-                size='large'
-                className='bg-primary hover:!text-white flex items-center justify-center text-white'
-                onClick={() => {
-                  navigate('/manager/booking/' + customer._id)
-                }}
-              >
-                đặt vé
-              </ButtonAnt>
-            </Tooltip>
             <Tooltip title='Cập nhật thông tin khách hàng này'>
               <ButtonAnt
                 size='large'
@@ -230,12 +205,22 @@ export const ListCustomers = () => {
     }
   ]
 
-  const customers = customersData?.data?.docs.map((customer: any, index: number) => ({
+  const customers = customersData?.data?.map((customer: any, index: number) => ({
     ...customer,
     key: customer._id,
     index: index + 1
   }))
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
 
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   if (isLoading) return <Loading />
   if (isError) return <NotFound />
   return (
@@ -266,7 +251,29 @@ export const ListCustomers = () => {
         </Button> */}
         </Space>
       )}
-
+      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <div className='flex items-center justify-center min-h-screen bg-gray-100'>
+        <div className='bg-white p-6 rounded-lg shadow-lg w-96'>
+          <div className='flex justify-between items-center mb-4'>
+            <h2 className='text-lg font-semibold'>Đăng Nhập Hoặc Tạo Tài Khoản</h2>
+            <button className='text-gray-500'>&times;</button>
+          </div>
+          <div className='flex flex-col items-center'>
+            <img src='https://placehold.co/100x100' alt='Phone with gift icon' className='mb-4' />
+            <p className='text-center text-gray-700 mb-4'>
+              Nhập số điện thoại mua hàng để hưởng đặc quyền riêng tại FPT Shop
+            </p>
+            <input
+              type='text'
+              placeholder='Nhập số điện thoại'
+              className='border border-gray-300 rounded px-4 py-2 mb-4 w-full'
+            />
+            <button className='bg-red-600 text-white px-4 py-2 rounded w-full'>TIẾP TỤC</button>
+          </div>
+        </div>
+      </div>
+      </Modal>
+     
       <div className='dark:bg-graydark'>
         <Table
           columns={columns}
@@ -275,7 +282,7 @@ export const ListCustomers = () => {
           pagination={{
             showSizeChanger: true,
             pageSizeOptions: ['10', '15', '20', '25'],
-            total: customersData?.data?.totalDocs,
+            total: customersData?.data?.totalPage,
             onChange(page, pageSize) {
               setoptions((prev) => ({ ...prev, page, limit: pageSize }))
             }

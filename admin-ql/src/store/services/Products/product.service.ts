@@ -3,21 +3,24 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const productApi = createApi({
   reducerPath: 'productApi',
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API }),
+  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API,
+    credentials: 'include',
+    prepareHeaders: (headers, { getState }) => {
+      const accessToken = localStorage.getItem('token');
+
+      if (accessToken) {
+        headers.set('authorization', `Bearer ${accessToken}`)
+      }
+      return headers
+    }
+   }),
   tagTypes: ['Product'],
 
   endpoints: (builder) => ({
     /* get all products */
     getAllProducts: builder.query<IProductDocs, { _page?: number; _limit?: number; query?: string }>({
-      query: ({ _page, _limit, query }) => `/products/all?_page=${_page}&_limit=${_limit}0&query=${query}`,
+      query: ({ _page, _limit, query }) => `/buses`,
       providesTags: (result) => {
-        if (result) {
-          const final = [
-            ...result.docs.map(({ _id }) => ({ type: 'Product' as const, _id })),
-            { type: 'Product' as const, id: 'LIST' }
-          ]
-          return final
-        }
         return [{ type: 'Product', id: 'LIST' }]
       }
     }),
@@ -107,7 +110,7 @@ export const productApi = createApi({
     /* xóa cứng sản phẩm */
     deleteProduct: builder.mutation<{ message: string; data: IProduct }, { id: string }>({
       query: ({ id }) => ({
-        url: `/product/${id}`,
+        url: `/buses/${id}`,
         method: 'DELETE'
       }),
       invalidatesTags: [{ type: 'Product', id: 'LIST' }]
