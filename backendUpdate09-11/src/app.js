@@ -4,16 +4,16 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/connectDB.js";
 dotenv.config();
-
-
-
 import router from "./routes/index.js";
 import cronJobInitial from "./config/cronJobInitial.js";
 
 const app = express();
 app.use(
   cors({
-    origin: ["*"],
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Các phương thức cho phép
+    allowedHeaders: ['Content-Type', 'Authorization'], //
+    credentials: true,
   })
 );
 app.use(morgan("dev"));

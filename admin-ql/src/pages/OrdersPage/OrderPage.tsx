@@ -1,6 +1,5 @@
-import { OrderFeature } from '~/features'
 const OrderPage = () => {
-  return <OrderFeature />
+  return <></>
 }
 
 export default OrderPage

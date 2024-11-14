@@ -92,7 +92,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               defaultSelectedKeys={[`${currentPath}`]}
               defaultOpenKeys={['manager']}
               mode='inline'
-              items={user && user.role === 'admin' ? items : itemsStaff}
+              items={user && user.role === 'ADMIN' ? items : itemsStaff}
             />
           </div>
         </nav>

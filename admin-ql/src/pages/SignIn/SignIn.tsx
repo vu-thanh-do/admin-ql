@@ -21,13 +21,15 @@ export default function SignIn() {
   const onLogin = (loginData: Login) => {
     loginUser(loginData).then((data: any) => {
       if (data.error) {
-        return toast.error(data.error.data.message)
+        console.log(data?.error,'data.errordata.error')
+       return toast.error("error login")
       } else {
+        console.log(data.data,'datadatadatadata')
+        localStorage.setItem('token',data?.data?.token)
         const dataUser = data.data.user.role
-
-        dataUser == 'admin'
+        dataUser == 'ADMIN'
           ? (navigate('/manager/orders'), toast.success('Đăng nhập thành công'))
-          : dataUser == 'staff'
+          : dataUser == 'STAFF'
           ? (navigate('/manager/orders'), toast.success('Đăng nhập thành công'))
           : toast.error('Bạn không có quyền truy cập')
       }
@@ -54,11 +56,11 @@ export default function SignIn() {
                     type='email'
                     id='email'
                     placeholder='Email của bạn'
-                    {...register('account')}
+                    {...register('email')}
                     className='border-stroke focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary w-full py-4 pl-6 pr-10 bg-transparent border rounded-lg outline-none'
                   />
 
-                  {errors.account && <span className='text-danger text-[13px] self-start'>Email là bắt buộc</span>}
+                  {errors.email && <span className='text-danger text-[13px] self-start'>Email là bắt buộc</span>}
 
                   <span className='right-4 top-4 absolute'>
                     <EmailIcon />

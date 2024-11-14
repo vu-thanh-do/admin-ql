@@ -1,5 +1,5 @@
 import { BarChartSimple, MonthlyRevenue } from './components'
-import { CardFour, CardThree, CardTwo } from '~/components'
+import { CardFour, CardTwo } from '~/components'
 import { useGetAnalystQuery, useGetAnalyticsQuery } from '~/store/services'
 
 import { CardOne } from '~/components/Cart/CardOne'
@@ -23,7 +23,6 @@ const FeatureDashboard = () => {
         {/* <CardTwo data={dataAnalytics2?.['doanh thu tháng này']} /> */}
         <ProductAnalytic dataAnalytics2={dataAnalytics2} dataAnalytics={dataAnalytics} />
         <CardOne data={dataAnalytics2?.['doanh thu tháng này']} />
-        <CardThree data={dataAnalytics} data2={dataAnalytics2} />
         <CardFour data={dataAnalytics.users} />
       </div>
 

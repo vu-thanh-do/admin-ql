@@ -9,7 +9,7 @@ export const AuthApi = createApi({
   endpoints: (builder) => ({
     signIn: builder.mutation<ResIUser, Login>({
       query: ({ ...rest }) => ({
-        url: '/login',
+        url: '/auth/login',
         body: rest,
         method: 'POST',
         credentials: 'include'
@@ -17,7 +17,7 @@ export const AuthApi = createApi({
     }),
     logOut: builder.mutation<void, void>({
       query: () => ({
-        url: 'http://localhost:8000/auth/logout',
+        url: 'http://localhost:8080/auth/logout',
         method: 'POST',
         credentials: 'include'
       })
