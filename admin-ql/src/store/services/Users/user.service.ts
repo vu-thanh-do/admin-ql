@@ -8,7 +8,7 @@ export const userApi = createApi({
     baseUrl: import.meta.env.VITE_API,
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
-      const accessToken = localStorage.getItem('token');
+      const accessToken = localStorage.getItem('token')
 
       if (accessToken) {
         headers.set('authorization', `Bearer ${accessToken}`)
@@ -30,7 +30,7 @@ export const userApi = createApi({
 
     addUser: builder.mutation<any, any>({
       query: (user) => ({
-        url: '/users',
+        url: '/auth/register',
         method: 'POST',
         body: user
       }),
@@ -40,13 +40,12 @@ export const userApi = createApi({
     updateUser: builder.mutation<any, any>({
       query: (user) => ({
         url: `/users/${user._id}`,
-        method: 'PATCH',
+        method: 'PUT',
         body: {
-          username: user.username,
-          gender: user.gender,
-          role: user.role,
-          avatar: user.avatar,
-          loyalCustomers: user.loyalCustomers
+          userName: user.userName,
+          phoneNumber: user.phoneNumber,
+          fullName: user.fullName,
+          cccd: user.cccd
         }
         // credentials: 'include'
       }),

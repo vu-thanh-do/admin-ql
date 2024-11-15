@@ -11,6 +11,7 @@ import { messageAlert } from '~/utils/messageAlert'
 import { setOpenDrawer } from '~/store/slices'
 import toast from 'react-hot-toast'
 import { useAppSelector } from '~/store/hooks'
+import axios from 'axios'
 
 type FormCustomerProps = {
   open: boolean
@@ -21,6 +22,10 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
   const [fileList, setFileList] = useState<UploadFile[]>([])
   const dispatch = useAppDispatch()
   const [form] = Form.useForm()
+  const [checkOtp, setCheckOtp] = useState(false)
+  const [otpValue, setOtpValue] = useState<any>(null)
+  const [emailValue, setEmailValue] = useState(null)
+
   const [addUser, { isLoading: isAdding }] = useAddUserMutation()
   const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation()
   const [uploadFile, { isLoading: isUploading }] = useUpLoadAvartaUserMutation()
@@ -28,26 +33,31 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
   useEffect(() => {
     userData._id &&
       form.setFieldsValue({
-        username: userData.username,
-        gender: userData.gender,
-        loyalCustomers: userData.loyalCustomers == true ? 'true' : 'false'
+        userName: userData.userName,
+        email: userData.email,
+        phoneNumber: userData.phoneNumber,
+        fullName: userData.fullName,
+        cccd: userData.cccd
       })
   }, [userData, form])
 
   const onFinish = async (values: any) => {
     console.log(values, 'values')
     if (fileList.length <= 0 && !userData._id) {
+      setEmailValue(values.email)
       addUser({
-        account: values.account,
-        gender: values.gender,
-        password: values.password,
-        username: values.username,
-        role: 'customer'
+        userName: values.userName,
+        email: values.email,
+        phoneNumber: values.phoneNumber,
+        fullName: values.fullName,
+        cccd: values.cccd,
+        password: values.password
       })
         .unwrap()
         .then(() => {
           toast.success('Thêm khách hàng thành công')
-          onClose()
+          // onClose()
+          setCheckOtp(true)
         })
         .catch((error: any) => {
           toast.error(`Thêm khách hàng thất bại! ${error.data.message}`)
@@ -57,7 +67,7 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
     }
     // loyalCustomers: values.loyalCustomers == 'true' ? true : false,
     if (userData._id && fileList.length === 0) {
-      updateUser({ ...values,  _id: userData._id })
+      updateUser({ ...values, _id: userData._id })
         .unwrap()
         .then(() => {
           messageAlert('Cập nhật thành công', 'success')
@@ -68,56 +78,40 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
         })
       return
     }
-    const formData = new FormData()
-    const file = fileList[0]?.originFileObj as RcFile
-    formData.append('images', file)
-    uploadFile(formData)
-      .unwrap()
-      .then(({ urls }: any) => {
-        if (userData._id) {
-          updateUser({
-            gender: values.gender,
-            username: values.username,
-            avatar: urls[0].url,
-            _id: userData._id
-          })
-            .unwrap()
-            .then(() => {
-              messageAlert('Cập nhật thành công', 'success')
-              onClose()
-            })
-            .catch(() => {
-              messageAlert('Cập nhật thất bại', 'error')
-            })
-        } else {
-          addUser({
-            account: values.account,
-            gender: values.gender,
-            password: values.password,
-            username: values.username,
-            role: 'customer',
-            avatar: urls[0].url
-          })
-            .unwrap()
-            .then(() => {
-              toast.success('Thêm khách hàng thành công')
-              onClose()
-            })
-            .catch((error) => {
-              toast.error(`Thêm khách hàng thất bại! ${error.data.message}`)
-              onClose()
-            })
-        }
-      })
-      .catch(() => messageAlert('UpLoad file thất bại!', 'error'))
   }
   const onClose = () => {
     setFileList([])
     // userData._id && dispatch(setUser({ _id: '', username: '', gender: '', avatar: '' }))
     form.resetFields()
     dispatch(setOpenDrawer(false))
+    setCheckOtp(false)
   }
-
+  const handelSubmitOtp = async () => {
+    try {
+      //
+      const dataPayload = {
+        email: emailValue,
+        otp: otpValue
+      }
+      const { data } = await axios.post(`${import.meta.env.VITE_API}/auth/verify-otp`, dataPayload)
+      messageAlert('thành công', 'success')
+      onClose()
+    } catch (error) {
+      //
+    }
+  }
+  const handelSubmitOtpV2 = async () => {
+    try {
+      //
+      const dataPayload = {
+        email: emailValue
+      }
+      const { data } = await axios.post(`${import.meta.env.VITE_API}/auth/resend-otp`, dataPayload)
+      messageAlert('Đã gửi lại Otp', 'success')
+    } catch (error) {
+      //
+    }
+  }
   return (
     <Drawer
       className='dark:!text-white dark:bg-black'
@@ -130,122 +124,130 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
       getContainer={false}
       open={open}
     >
-      <Form
-        name='basic'
-        autoComplete='off'
-        layout='vertical'
-        form={form}
-        className='dark:text-white'
-        onFinish={onFinish}
-      >
-        <Form.Item
-          className='dark:text-white'
-          label='Tên khách hàng'
-          name='username'
-          rules={[
-            { required: true, message: 'Không được bỏ trống tên khách hàng!' },
-            {
-              validator: (_, value, callback) => {
-                if (value && value.trim() === '') {
-                  callback('Không được để trống')
-                } else {
-                  callback()
+      <>
+        {checkOtp ? (
+          <>
+            <div className='flex items-center justify-center min-h-screen bg-gray-100'>
+              <div className='bg-white p-6 rounded-lg shadow-lg w-96'>
+                <div className='flex justify-between items-center mb-4'>
+                  <h2 className='text-lg font-semibold'>Đăng Nhập Hoặc Tạo Tài Khoản</h2>
+                  <button className='text-gray-500'>&times;</button>
+                </div>
+                <div className='flex flex-col items-center'>
+                  <img src='https://placehold.co/100x100' alt='Phone with gift icon' className='mb-4' />
+                  <p className='text-center text-gray-700 mb-4'>mã otp đã được gửi đến mail của bạn , hãy nhập nó</p>
+                  <input
+                    type='text'
+                    placeholder='Nhập mã otp'
+                    onChange={(e) => setOtpValue(e.target.value)}
+                    className='border border-gray-300 rounded px-4 py-2 mb-4 w-full'
+                  />
+                  <button onClick={handelSubmitOtp} className='bg-danger text-white px-4 py-2 rounded w-full'>
+                    TIẾP TỤC
+                  </button>
+                  <button onClick={handelSubmitOtpV2} className='bg-danger text-white px-4 py-2 rounded w-full'>
+                    Gửi lại
+                  </button>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <Form
+            name='basic'
+            autoComplete='off'
+            layout='vertical'
+            form={form}
+            className='dark:text-white'
+            onFinish={onFinish}
+          >
+            <Form.Item
+              className='dark:text-white'
+              label='Tên khách hàng'
+              name='userName'
+              rules={[
+                { required: true, message: 'Không được bỏ trống tên khách hàng!' },
+                {
+                  validator: (_, value, callback) => {
+                    if (value && value.trim() === '') {
+                      callback('Không được để trống')
+                    } else {
+                      callback()
+                    }
+                  }
                 }
-              }
-            }
-          ]}
-        >
-          <Input size='large' placeholder='Tên người dùng' />
-        </Form.Item>
-        <Form.Item
-          className='dark:text-white'
-          label='Giới tính'
-          name='gender'
-          rules={[{ required: true, message: 'Không được bỏ trống giới tính!' }]}
-        >
-          <Select
-            className='w-full'
-            size='large'
-            // onChange={handleChange}
-            placeholder='Chọn giới tính'
-            options={[
-              { value: 'male', label: 'Nam' },
-              { value: 'female', label: 'Nữ' },
-              { value: 'other', label: 'Khác' }
-            ]}
-          />
-        </Form.Item>
-        <Form.Item
-          className='dark:text-white'
-          label='Khách hàng thân thiết'
-          name='loyalCustomers'
-          rules={[{ required: true, message: 'Không được bỏ trống giới tính!' }]}
-        >
-          <Select
-            className='w-full'
-            size='large'
-            placeholder='Chọn'
-            options={[
-              { value: 'true', label: 'Thân thiết' },
-              { value: 'false', label: 'default' }
-            ]}
-          />
-        </Form.Item>
-        {!userData._id && (
-          <Form.Item
-            className='dark:text-white'
-            label='Tài khoản'
-            name='account'
-            rules={[
-              { required: true, message: 'Không được bỏ trống tài khoản!' },
-              { type: 'email', message: 'Email sai định dạng' }
-            ]}
-          >
-            <Input type='email' size='large' placeholder='Tài khoản' />
-          </Form.Item>
-        )}
+              ]}
+            >
+              <Input size='large' placeholder='Tên người dùng' />
+            </Form.Item>
 
-        {!userData._id && (
-          <Form.Item
-            className='dark:text-white'
-            label='Mật khẩu'
-            name='password'
-            rules={[
-              { required: true, message: 'Không được bỏ trống mật khẩu!' },
-              {
-                min: 6,
-                message: 'Mật khẩu phải nhiều hơn 6 ký tự'
-              }
-            ]}
-          >
-            <Input.Password placeholder='Mật khẩu' size='large' />
-          </Form.Item>
-        )}
+            {/* {!userData._id && ( */}
+            <Form.Item
+              className='dark:text-white'
+              label='email'
+              name='email'
+              rules={[
+                { required: true, message: 'Không được bỏ trống tài khoản!' },
+                { type: 'email', message: 'Email sai định dạng' }
+              ]}
+            >
+              <Input type='email' size='large' placeholder='email' />
+            </Form.Item>
+            {/* )} */}
+            <Form.Item
+              className='dark:text-white'
+              label='phoneNumber'
+              name='phoneNumber'
+              rules={[{ required: true, message: 'Không được bỏ trống ' }]}
+            >
+              <Input type='text' size='large' placeholder='phoneNumber' />
+            </Form.Item>
+            <Form.Item
+              className='dark:text-white'
+              label='fullName'
+              name='fullName'
+              rules={[{ required: true, message: 'Không được bỏ trống ' }]}
+            >
+              <Input type='text' size='large' placeholder='fullName' />
+            </Form.Item>
+            <Form.Item
+              className='dark:text-white'
+              label='cccd'
+              name='cccd'
+              rules={[{ required: true, message: 'Không được bỏ trống ' }]}
+            >
+              <Input type='text' size='large' placeholder='cccd' />
+            </Form.Item>
+            {!userData._id && (
+              <Form.Item
+                className='dark:text-white'
+                label='Mật khẩu'
+                name='password'
+                rules={[
+                  { required: true, message: 'Không được bỏ trống mật khẩu!' },
+                  {
+                    min: 6,
+                    message: 'Mật khẩu phải nhiều hơn 6 ký tự'
+                  }
+                ]}
+              >
+                <Input.Password placeholder='Mật khẩu' size='large' />
+              </Form.Item>
+            )}
 
-        {fileList.length <= 0 && userData.avatar && (
-          <div className='my-5'>
-            <Image src={userData.avatar} width={100} height={100} />
-          </div>
+            <Form.Item>
+              <Button
+                disabled={isAdding || isUploading || isUpdating}
+                styleClass='!w-full mt-5 py-2'
+                type='submit'
+                icon={(isAdding || isUploading || isUpdating) && <LoadingOutlined />}
+              >
+                {userData._id ? 'Cập nhật' : 'Thêm khách hàng'}
+              </Button>
+            </Form.Item>
+          </Form>
         )}
-
-        <Form.Item
-          className='dark:text-white'
-          label='Tải ảnh lên'
-          // rules={[{ required: true, message: 'Không được bỏ trống giá địa chỉ!' }]}
-        >
-          <UploadFile fileList={fileList} setFileList={setFileList} useCrop />
-        </Form.Item>
-        <Form.Item>
-          <Button
-            disabled={isAdding || isUploading || isUpdating}
-            styleClass='!w-full mt-5 py-2'
-            type='submit'
-            icon={(isAdding || isUploading || isUpdating) && <LoadingOutlined />}
-          >
-            {userData._id ? 'Cập nhật' : 'Thêm khách hàng'}
-          </Button>
-        </Form.Item>
-      </Form>
+      </>
     </Drawer>
   )
 }
