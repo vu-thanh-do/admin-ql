@@ -2,7 +2,17 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const orderApi = createApi({
   reducerPath: 'orderApi',
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: import.meta.env.VITE_API,
+    credentials: 'include',
+    prepareHeaders: (headers, { getState }) => {
+      const accessToken = localStorage.getItem('token')
+      if (accessToken) {
+        headers.set('authorization', `Bearer ${accessToken}`)
+      }
+      return headers
+    }
+  }),
   tagTypes: ['Orders'],
   endpoints: (builder) => ({
     getAllOrder: builder.query<any, { limit: number; page: number }>({
@@ -18,11 +28,9 @@ export const orderApi = createApi({
 
     /**Order cho xac nhan */
     getAllOrderPending: builder.query<any, { limit: number; page: number; startDate?: string; endDate?: string }>({
-      query: (options) =>
-        `/order-pending?_limit=${options.limit}&_page=${options.page}&startDate=${options.startDate}&endDate=${options.endDate}`,
+      query: (options) => `/tickets?limit=${options.limit}&page=${options.page}`,
       providesTags: ['Orders']
     }),
-
     /**Order hoan thanh */
     getAllOrderDone: builder.query<any, { limit: number; page: number; startDate?: string; endDate?: string }>({
       query: (options) =>
@@ -55,9 +63,10 @@ export const orderApi = createApi({
 
     /**Cap nhat trang thai order -> comfirmed */
     confirmOrder: builder.mutation({
-      query: (id: string) => ({
-        url: `/order/confirmed/${id}`,
-        method: 'PUT'
+      query: ({ idOrder, idUser }) => ({
+        url: `/tickets/update-status/${idOrder}`,
+        method: 'PUT',
+        body: { status: idUser }
       }),
       invalidatesTags: ['Orders']
     }),

@@ -71,7 +71,9 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
       </Tooltip>
     ),
     onFilter: (value: any, record: any) => {
-      return record[dataIndex as unknown as number].toString().toLowerCase().includes(value.toLowerCase())
+      console.log(value, 'valuevalue')
+      console.log(record, 'record')
+      return record[dataIndex as unknown as number]?.toString().toLowerCase().includes(value.toLowerCase())
     },
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
@@ -82,13 +84,13 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
       searchedColumn === dataIndex.name ? (
         <div className='gap-x-3 flex items-center justify-start'>
           <img
-            src={product.images[0].url}
-            alt={product.images[0].filename}
-            className='object-cover w-20 h-20 rounded-lg cursor-pointer'
             onClick={() => {
               dispatch(setOpenDrawer(true))
               dispatch(setProductDetail(product))
             }}
+            src={'/bus-bg.jpg'}
+            alt={'/bus-bg.jpg'}
+            className='object-cover w-20 h-20 rounded-lg cursor-pointer'
           />
           <div className='flex flex-col gap-0.5 justify-center items-start'>
             <Tag
@@ -101,11 +103,11 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
               {product.busTypeName}
             </Tag>
             <p
-              className='hover:underline capitalize truncate cursor-pointer w-[215px]'
               onClick={() => {
                 dispatch(setOpenDrawer(true))
                 dispatch(setProductDetail(product))
               }}
+              className='hover:underline capitalize truncate cursor-pointer w-[215px]'
             >
               {/* {product.name} */}
               <Highlighter
@@ -129,13 +131,13 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
         // text
         <div className='gap-x-3 flex items-center justify-start'>
           <img
-            src={'/bus-bg.jpg'}
-            alt={'/bus-bg.jpg'}
-            className='object-cover w-20 h-20 rounded-lg cursor-pointer'
             onClick={() => {
               dispatch(setOpenDrawer(true))
               dispatch(setProductDetail(product))
             }}
+            src={'/bus-bg.jpg'}
+            alt={'/bus-bg.jpg'}
+            className='object-cover w-20 h-20 rounded-lg cursor-pointer'
           />
           <div className='flex flex-col gap-0.5 justify-center items-start'>
             <Tag
@@ -148,11 +150,11 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
               {product.busTypeName}
             </Tag>
             <p
-              className='hover:underline capitalize truncate cursor-pointer w-[215px]'
               onClick={() => {
                 dispatch(setOpenDrawer(true))
                 dispatch(setProductDetail(product))
               }}
+              className='hover:underline capitalize truncate cursor-pointer w-[215px]'
             >
               {product.name}
             </p>
@@ -168,7 +170,6 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
         </div>
       )
   })
-
   /* columns staff */
   const columnsStaff: any = [
     {
@@ -179,10 +180,10 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
     },
     {
       title: 'Tên Xe',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'busTypeName',
+      key: 'busTypeName',
       width: 270,
-      ...getColumnSearchProps('name' as unknown as IProduct)
+      ...getColumnSearchProps('busTypeName' as unknown as IProduct)
     },
     {
       title: 'Số Ghế  ',

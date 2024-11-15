@@ -1,5 +1,6 @@
+import Orders from "~/features/Orders"
 const OrderPage = () => {
-  return <></>
+  return   <Orders />
 }
 
 export default OrderPage

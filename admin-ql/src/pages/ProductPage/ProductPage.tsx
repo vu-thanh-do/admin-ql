@@ -13,11 +13,9 @@ const ProductPage = () => {
     _limit: 10,
     query: ''
   })
-
   if (loadingProduct) {
     return <div>Loading...</div>
   }
-
   if (errorProudct || !dataProducts) {
     return <NotFound />
   }

@@ -44,7 +44,7 @@ const FormProduct = () => {
   const [createProduct, { isLoading: isCreateLoading }] = useCreateProductMutation()
   const { productsList } = useAppSelector((state: RootState) => state.products)
   const [editProduct, { isLoading: isUpdating }] = useEditProductMutation()
-
+  console.log(productsList, 'productsListproductsList')
   useEffect(() => {
     if (dataCategories && dataToppings && dataSizeDefault) {
       setCategories(dataCategories?.docs)
@@ -60,37 +60,11 @@ const FormProduct = () => {
   }
 
   const handleSubmitForm = async (values: any) => {
-    console.log(values, "cccc")
-
-    if (values.sale === undefined) {
-      values.sale = 0
-    }
-    if (values.sizeDefault === undefined && values.size.length === 0) {
-      message.error('Phải có ít nhất 1 size')
-      return
-    }
-    if (values.kindOfRoom === undefined && values.kindOfRoom.length === 0) {
-      message.error('Phải có ít nhất 1 loại Xe')
-      return
-    }
-
-    /* kiểm tra xem sale có cao hơn giá size không */
-    if (values.size !== undefined) {
-      for (const sizeItem of values.size) {
-        if (sizeItem.price < values.sale) {
-          message.error('Giá sale không được cao hơn giá size')
-          return
-        }
-      }
-    }
+    console.log(values, 'cccc')
 
     if (productId && productEdit) {
       const data = {
-        ...values,
-        images: images.length > 0 ? images : productEdit.images,
-        size: values.size.map((size: any) => ({ name: size.name, price: Number(size.price), _id: size._id })),
-        // kindOfRoom: values.kindOfRoom.map((size: any) => ({ name: size.name, price: Number(size.price) }))
-
+        ...values
       }
       try {
         const response = await editProduct({ id: productEdit._id, product: data }).unwrap()
@@ -110,7 +84,7 @@ const FormProduct = () => {
     }
 
     try {
-      const response = await createProduct({ ...values, images }).unwrap()
+      const response = await createProduct({ ...values }).unwrap()
       if (response.message === 'success' || response.message === 'succes') {
         message.success('Thêm Xe thành công!')
       }
@@ -129,24 +103,26 @@ const FormProduct = () => {
   useEffect(() => {
     if (productEdit) {
       form.setFieldsValue({
-        name: productEdit.name,
-        category: productEdit.category._id,
-        toppings: productEdit.toppings.map((topping) => topping._id),
-        is_active: productEdit.is_active,
-        size: productEdit.sizes.filter((sizeItem) => !sizeItem.is_default),
-        kindOfRoom: productEdit.kindOfRoom.filter((sizeItem : any) => !sizeItem.is_default),
-        sizeDefault: productEdit.sizes.filter((sizeItem) => sizeItem.is_default).map((sizeItem) => sizeItem._id),
-        sale: productEdit.sale,
-        description: productEdit.description,
-        timBooking : productEdit.timBooking
+        busTypeName: productEdit.busTypeName,
+        seatCapacity: productEdit.seatCapacity,
+        priceFactor: productEdit.priceFactor,
+        licensePlate: productEdit.licensePlate
       })
     }
-  }, [form, productEdit])
-  console.log('🚀 ~ file: FormProduct.tsx:130 ~ useEffect ~ productEdit.sizes:', productEdit ? productEdit.sizes : null)
+  }, [
+    form,
+    productEdit,
+    productsList.busTypeName,
+    productsList.licensePlate,
+    productsList.priceFactor,
+    productsList.seatCapacity
+  ])
+  console.log('🚀 ~ file: FormProduct.tsx:130 ~ useEffect ~ productEdit.sizes:', productEdit)
 
   useEffect(() => {
     if (productId) {
-      const product = productsList.find((product) => product._id === productId)
+      const product = productsList?.data?.find((product) => product._id === productId)
+
       if (product) setProductEdit(product)
     } else {
       setProductEdit(null)
@@ -184,7 +160,7 @@ const FormProduct = () => {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              name='name'
+              name='busTypeName'
               label='Tên Xe'
               rules={[
                 { required: true, message: 'Tên Xe là bắt buộc!' },
@@ -201,7 +177,7 @@ const FormProduct = () => {
               <Input placeholder='Tên Xe' size='large' />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          {/* <Col span={12}>
             <Form.Item
               name='category'
               label='Tên Tuyến đường'
@@ -215,9 +191,9 @@ const FormProduct = () => {
                 ))}
               </Select>
             </Form.Item>
-          </Col>
+          </Col> */}
         </Row>
-        <Row gutter={16}>
+        {/* <Row gutter={16}>
           <Col span={12}>
             <Form.Item
               name='toppings'
@@ -245,8 +221,8 @@ const FormProduct = () => {
               </Select>
             </Form.Item>
           </Col>
-        </Row>
-        <Row gutter={16}>
+        </Row> */}
+        {/* <Row gutter={16}>
           <Col span={12}>
             <Form.Item className='w-full' label='Ghế Xe'>
               <Form.List name='size'>
@@ -281,7 +257,6 @@ const FormProduct = () => {
               </Form.List>
             </Form.Item>
           </Col>
-          {/*  */}
           <Col span={12}>
             <Form.Item className='w-full' label='Loại Xe'>
               <Form.List name='kindOfRoom'>
@@ -316,7 +291,6 @@ const FormProduct = () => {
               </Form.List>
             </Form.Item>
           </Col>
-          {/*  */}
           <Col span={12}>
             <Form.Item
               name='sizeDefault'
@@ -335,15 +309,29 @@ const FormProduct = () => {
               </Select>
             </Form.Item>
           </Col>
-        </Row>
+        </Row> */}
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name='sale' label='Giảm giá'>
-              <InputNumber placeholder='Giảm giá Xe' className='w-full' />
+            <Form.Item name='seatCapacity' label='Số ghế'>
+              <InputNumber placeholder='Số ghế Xe' className='w-full' />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item name='priceFactor' label='Hệ Số giá'>
+              <InputNumber placeholder='Hệ Số giá Xe' className='w-full' />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item name='licensePlate' label='Biển Số Xe'>
+              <Input placeholder='Biển Số  Xe' className='w-full' />
+            </Form.Item>
+          </Col>
+        </Row>
+        {/* <Row gutter={16}>
           <Col span={24}>
             {!isUpload && !isLoading && (
               <Form.Item
@@ -433,7 +421,7 @@ const FormProduct = () => {
               <Input.TextArea rows={4} placeholder='tuyến đường' />
             </Form.Item>
           </Col>
-        </Row>
+        </Row> */}
 
         <input type='submit' id='button-submit-form' value={'gửi'} className='hidden' />
       </Form>

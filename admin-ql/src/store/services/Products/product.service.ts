@@ -80,7 +80,7 @@ export const productApi = createApi({
     /* thêm sản phẩm */
     createProduct: builder.mutation<{ message: string; data: IProduct }, any>({
       query: (product) => ({
-        url: '/create/product',
+        url: '/buses',
         method: 'POST',
         body: product
       }),
@@ -120,7 +120,7 @@ export const productApi = createApi({
     editProduct: builder.mutation<{ message: string; data: IProduct }, { id: string; product: IProduct }>({
       query: ({ id, product }) => {
         return {
-          url: `/product/${id}`,
+          url: `/buses/${id}`,
           method: 'PUT',
           body: { ...product, _id: id }
         }

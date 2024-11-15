@@ -120,15 +120,12 @@ const SeatController = {
     try {
       const { id } = req.params;
       const { bus, seatNumber, status } = req.body;
-
       const busInfo = await Bus.findById(bus).exec();
-
       if (!busInfo) {
         return res.status(404).json({
           message: "An error occurred, please try again",
         });
       }
-
       const seat = await Seats.findByIdAndUpdate(
         id,
         {
@@ -153,12 +150,9 @@ const SeatController = {
       const { id } = req.params;
 
       const data = await Seats.findById(id).exec();
+      
       const bus = await Bus.findById(data.bus).exec();
-      if (bus) {
-        return res.status(400).json({
-          message: "An error occurred, please try again",
-        });
-      }
+      
 
       const seat = await Seats.findByIdAndDelete(id).exec();
 
