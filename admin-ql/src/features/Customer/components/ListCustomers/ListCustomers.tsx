@@ -25,7 +25,7 @@ type DataIndex = keyof IUserDataType
 export const ListCustomers = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [deleteUser] = useDeleteUserMutation()
   const [options, setoptions] = useState({
     page: 1,
@@ -161,6 +161,13 @@ export const ListCustomers = () => {
       render: (email: string) => <span>{email}</span>
     },
     {
+      title: 'Phân quyền',
+      dataIndex: 'role',
+      key: 'role',
+      width: 90,
+      render: (phoneNumber: string) => <span>{phoneNumber}</span>
+    },
+    {
       title: 'SĐT',
       dataIndex: 'phoneNumber',
       key: 'phoneNumber',
@@ -211,16 +218,16 @@ export const ListCustomers = () => {
     index: index + 1
   }))
   const showModal = () => {
-    setIsModalOpen(true);
-  };
+    setIsModalOpen(true)
+  }
 
   const handleOk = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
 
   const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
   if (isLoading) return <Loading />
   if (isError) return <NotFound />
   return (
@@ -251,29 +258,29 @@ export const ListCustomers = () => {
         </Button> */}
         </Space>
       )}
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-      <div className='flex items-center justify-center min-h-screen bg-gray-100'>
-        <div className='bg-white p-6 rounded-lg shadow-lg w-96'>
-          <div className='flex justify-between items-center mb-4'>
-            <h2 className='text-lg font-semibold'>Đăng Nhập Hoặc Tạo Tài Khoản</h2>
-            <button className='text-gray-500'>&times;</button>
-          </div>
-          <div className='flex flex-col items-center'>
-            <img src='https://placehold.co/100x100' alt='Phone with gift icon' className='mb-4' />
-            <p className='text-center text-gray-700 mb-4'>
-              Nhập số điện thoại mua hàng để hưởng đặc quyền riêng tại FPT Shop
-            </p>
-            <input
-              type='text'
-              placeholder='Nhập số điện thoại'
-              className='border border-gray-300 rounded px-4 py-2 mb-4 w-full'
-            />
-            <button className='bg-red-600 text-white px-4 py-2 rounded w-full'>TIẾP TỤC</button>
+      <Modal title='Basic Modal' open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <div className='flex items-center justify-center min-h-screen bg-gray-100'>
+          <div className='bg-white p-6 rounded-lg shadow-lg w-96'>
+            <div className='flex justify-between items-center mb-4'>
+              <h2 className='text-lg font-semibold'>Đăng Nhập Hoặc Tạo Tài Khoản</h2>
+              <button className='text-gray-500'>&times;</button>
+            </div>
+            <div className='flex flex-col items-center'>
+              <img src='https://placehold.co/100x100' alt='Phone with gift icon' className='mb-4' />
+              <p className='text-center text-gray-700 mb-4'>
+                Nhập số điện thoại mua hàng để hưởng đặc quyền riêng tại FPT Shop
+              </p>
+              <input
+                type='text'
+                placeholder='Nhập số điện thoại'
+                className='border border-gray-300 rounded px-4 py-2 mb-4 w-full'
+              />
+              <button className='bg-red-600 text-white px-4 py-2 rounded w-full'>TIẾP TỤC</button>
+            </div>
           </div>
         </div>
-      </div>
       </Modal>
-     
+
       <div className='dark:bg-graydark'>
         <Table
           columns={columns}

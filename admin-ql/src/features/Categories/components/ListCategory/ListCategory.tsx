@@ -39,14 +39,14 @@ const ListCategory = () => {
   }
   const hasSelected = selectedRowKeys.length > 1
 
-  const categorriesData = categories?.docs.map((item: ICategory, index: number) => ({
+  const categorriesData = categories?.data.map((item: ICategory, index: number) => ({
     ...item,
     key: item._id,
     index: index + 1
   }))
 
   // const columnsData = useRenderCategory()
-  const columnsData = useRenderCategory(categories?.docs || [])
+  const columnsData = useRenderCategory(categories?.data || [])
 
   return (
     <>
@@ -95,7 +95,6 @@ const ListCategory = () => {
           }}
           scroll={{ y: '50vh', x: 650 }}
           bordered
-          rowSelection={user.role === IRoleUser.ADMIN ? rowSelection : undefined}
         />
       </div>
     </>

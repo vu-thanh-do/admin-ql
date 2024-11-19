@@ -21,6 +21,7 @@ import { GuardAccount } from '.'
 import SignIn from '~/pages/SignIn'
 import { createBrowserRouter } from 'react-router-dom'
 import FeedBack from '~/pages/FeedBack'
+import TripPage from '~/pages/TripPage'
 
 const routers = createBrowserRouter([
   {
@@ -46,6 +47,7 @@ const routers = createBrowserRouter([
         children: [
           { path: 'toppings', element: <ToppingPage /> },
           { path: 'products', element: <ProductPage /> },
+          { path: 'trips', element: <TripPage /> },
           { path: 'bg', element: <ProductPage /> },
           { path: 'sizes', element: <SizePage /> },
           { path: 'customers', element: <CustomerPage /> },

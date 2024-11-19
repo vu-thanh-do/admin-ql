@@ -3,5 +3,4 @@ import ListCategoryDeleted from '../components/ListCategoryDeleted/ListCategoryD
 
 export const items = [
   { key: '1', label: 'Tất cả Tuyến đường', children: <ListCategory /> },
-  { key: '2', label: 'Tuyến đường đã xóa', children: <ListCategoryDeleted /> }
 ]

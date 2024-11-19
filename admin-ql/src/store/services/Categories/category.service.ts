@@ -4,15 +4,23 @@ import { ICategoryDocs } from '~/types'
 
 export const categoryApi = createApi({
   reducerPath: 'categoryApi',
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API }),
+  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API,
+    credentials: 'include',
+    prepareHeaders: (headers, { getState }) => {
+      const accessToken = localStorage.getItem('token');
+
+      if (accessToken) {
+        headers.set('authorization', `Bearer ${accessToken}`)
+      }
+      return headers
+    }
+   }),
   tagTypes: ['Category'],
   endpoints: (builder) => ({
     getAllCategory: builder.query<ICategoryDocs, { _page: number; _limit: number }>({
-      query: ({ _page, _limit }) => `/categories?_page=${_page}?_limit=${_limit}`,
+      query: ({ _page, _limit }) => `/bus-routes`,
       providesTags: (result) =>
-        result
-          ? [...result.docs.map(({ _id }) => ({ type: 'Category', _id }) as const), { type: 'Category', _id: 'LIST' }]
-          : [{ type: 'Category', id: 'LIST' }]
+       [{ type: 'Category', id: 'LIST' }]
     }),
     getAllCategoryDeleted: builder.query<ICategoryDocs, number>({
       query: (page) => `/categories-isDeleted?_page=${page}`,
@@ -24,8 +32,8 @@ export const categoryApi = createApi({
 
     deleteFake: builder.mutation({
       query: (id: string) => ({
-        url: `/category-deleteFake/${id}`,
-        method: 'PUT'
+        url: `/bus-routes/${id}`,
+        method: 'DELETE'
       }),
       invalidatesTags: ['Category']
     }),
@@ -39,7 +47,7 @@ export const categoryApi = createApi({
 
     addCategory: builder.mutation({
       query: (category: { name: string }) => ({
-        url: '/category',
+        url: '/bus-routes',
         method: 'POST',
         body: category
       }),
@@ -47,10 +55,10 @@ export const categoryApi = createApi({
     }),
 
     updateCategory: builder.mutation({
-      query: (category: { _id: string; name: string }) => ({
-        url: `/category/${category._id}`,
+      query: (category: { _id: string; name: any }) => ({
+        url: `/bus-routes/${category._id}`,
         method: 'PUT',
-        body: { name: category.name }
+        body:  category
       }),
       invalidatesTags: ['Category']
     }),

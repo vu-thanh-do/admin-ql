@@ -24,7 +24,18 @@ export const productApi = createApi({
         return [{ type: 'Product', id: 'LIST' }]
       }
     }),
-
+    getAllTrips: builder.query<IProductDocs, { _page?: number; _limit?: number; query?: string }>({
+      query: ({ _page, _limit, query }) => `/trips`,
+      providesTags: (result) => {
+        return [{ type: 'Product', id: 'LIST' }]
+      }
+    }),
+    getAllBusRoute: builder.query<IProductDocs, { _page?: number; _limit?: number; query?: string }>({
+      query: ({ _page, _limit, query }) => `/bus-routes`,
+      providesTags: (result) => {
+        return [{ type: 'Product', id: 'LIST' }]
+      }
+    }),
     /* get one */
     getOneProduct: builder.query<{ message: string; data: IProduct }, { id: string }>({
       query: ({ id }) => `post/${id}`,
@@ -86,7 +97,14 @@ export const productApi = createApi({
       }),
       invalidatesTags: [{ type: 'Product', id: 'LIST' }]
     }),
-
+    createTrips: builder.mutation<{ message: string; data: IProduct }, any>({
+      query: (product) => ({
+        url: '/trips',
+        method: 'POST',
+        body: product
+      }),
+      invalidatesTags: [{ type: 'Product', id: 'LIST' }]
+    }),
     /* xóa mềm sản phẩm */
     deleteFakeProduct: builder.mutation<{ message: string; data: IProduct }, { id: string }>({
       query: ({ id }) => ({
@@ -115,12 +133,28 @@ export const productApi = createApi({
       }),
       invalidatesTags: [{ type: 'Product', id: 'LIST' }]
     }),
-
+    deleteTrip: builder.mutation<{ message: string; data: IProduct }, { id: string }>({
+      query: ({ id }) => ({
+        url: `/trips/${id}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: [{ type: 'Product', id: 'LIST' }]
+    }),
     /* edit product */
     editProduct: builder.mutation<{ message: string; data: IProduct }, { id: string; product: IProduct }>({
       query: ({ id, product }) => {
         return {
           url: `/buses/${id}`,
+          method: 'PUT',
+          body: { ...product, _id: id }
+        }
+      },
+      invalidatesTags: [{ type: 'Product', id: 'LIST' }]
+    }),
+    editTrips: builder.mutation<{ message: string; data: any }, { id: string; product: any }>({
+      query: ({ id, product }) => {
+        return {
+          url: `/trips/${id}`,
           method: 'PUT',
           body: { ...product, _id: id }
         }
@@ -140,5 +174,10 @@ export const {
   useDeleteFakeProductMutation,
   useRestoreProductMutation,
   useDeleteProductMutation,
-  useEditProductMutation
+  useEditProductMutation,
+  useGetAllTripsQuery,
+  useDeleteTripMutation,
+  useGetAllBusRouteQuery,
+  useCreateTripsMutation,
+  useEditTripsMutation
 } = productApi

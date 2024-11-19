@@ -19,20 +19,20 @@ const Category = () => {
   return (
     <div>
       <Breadcrumb pageName='Tuyến đường'>
-        {isAdmin && (
-          <Button icon={<PlusIcon />} onClick={() => dispatch(setOpenDrawer(true))}>
-            Thêm
-          </Button>
-        )}
+        <Button icon={<PlusIcon />} onClick={() => dispatch(setOpenDrawer(true))}>
+          Thêm
+        </Button>
       </Breadcrumb>
-      {isAdmin ? (
+      <Tabs defaultActiveKey='1' items={items} className='text-white' />
+      <FormCategory open={openDrawer} />
+      {/* {isAdmin ? (
         <>
           <Tabs defaultActiveKey='1' items={items} className='text-white' />
           <FormCategory open={openDrawer} />
         </>
       ) : (
         <ListCategory />
-      )}
+      )} */}
     </div>
   )
 }

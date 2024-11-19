@@ -21,35 +21,50 @@ export const useRenderCategory = (categories: ICategory[], isDeleted?: boolean) 
   const dispatch = useAppDispatch()
 
   const { user } = useAppSelector((state: RootState) => state.persistedReducer.auth)
-
+  console.log(categories,'categories')
   /* staff */
   const columnsStaff: ColumnsType<ICategory> = [
     {
-      title: '#',
-      dataIndex: 'index',
-      key: 'index',
-      width: 50
+      title: 'id tuyến',
+      dataIndex: '_id',
+      key: '_id',
+      width: 150,
+      render: (text: any) => {
+        return <div>{text.slice(0, 6)}</div>
+      }
     },
     {
-      title: 'Tên Tuyến đường',
-      dataIndex: 'name',
-      key: 'name',
+      title: 'Điểm khởi hành',
+      dataIndex: 'startProvince',
+      key: 'startProvince',
       filterSearch: true,
-      filters: categories?.map((item) => ({ text: item.name, value: item._id })),
+      filters: categories?.map((item) => ({ text: item.startDistrict, value: item._id })),
       onFilter: (value: any, record: ICategory) => record._id === value
       // render: (name: string) => <span className='capitalize'>{name}</span>,
     },
     {
-      title: 'Ảnh',
-      key: 'action',
-      render: (_: string, category: any) => {
-        const image =  '/bus-bg.jpg'
-        return (
-          <div className='w-26 h-26 rounded-lg cursor-pointer mb-1 overflow-hidden flex justify-center items-center'>
-            <img className='object-cover w-full' src={image} />
-          </div>
-        )
-      }
+      title: 'Điểm đến',
+      dataIndex: 'endProvince',
+      key: 'endProvince',
+      filterSearch: true,
+      filters: categories?.map((item) => ({ text: item.startDistrict, value: item._id })),
+      onFilter: (value: any, record: ICategory) => record._id === value
+      // render: (name: string) => <span className='capitalize'>{name}</span>,
+    },
+    {
+      title: 'Chiều dài tuyến',
+      dataIndex: 'distance',
+      key: 'distance',
+    },
+    {
+      title: 'giá mỗi km',
+      dataIndex: 'pricePerKM',
+      key: 'pricePerKM',
+    },
+    {
+      title: 'Trạng thái tuyến',
+      dataIndex: 'status',
+      key: 'status',
     }
   ]
 
@@ -96,7 +111,19 @@ export const useRenderCategory = (categories: ICategory[], isDeleted?: boolean) 
                     className='bg-primary hover:!text-white flex items-center justify-center text-white'
                     icon={<BsFillPencilFill />}
                     onClick={() => {
-                      dispatch(setCategory({ _id: category._id, name: category.name }))
+                      dispatch(
+                        setCategory({
+                          _id: category._id,
+                          startProvince: category.startProvince,
+                          startDistrict: category.startDistrict,
+                          endProvince: category.endProvince,
+                          endDistrict: category.endDistrict,
+                          duration: category.duration,
+                          status: category.status,
+                          distance: category.distance,
+                          pricePerKM: category.pricePerKM,
+                        })
+                      );
                       dispatch(setOpenDrawer(true))
                     }}
                   />
@@ -159,7 +186,7 @@ export const useRenderCategory = (categories: ICategory[], isDeleted?: boolean) 
     }
   ]
 
-  return user && user.role === IRoleUser.ADMIN ? columnsAdmin : columnsStaff
+  return  columnsAdmin
 }
 
 // export default memo(useRenderCategory)
