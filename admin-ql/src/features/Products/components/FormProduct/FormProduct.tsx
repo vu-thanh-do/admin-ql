@@ -312,21 +312,25 @@ const FormProduct = () => {
         </Row> */}
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name='seatCapacity' label='Số ghế'>
+            <Form.Item
+              name='seatCapacity'
+              label='Số ghế'
+              rules={[{ required: true, message: 'Không được bỏ trống !' }]}
+            >
               <InputNumber placeholder='Số ghế Xe' className='w-full' />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name='priceFactor' label='Hệ Số giá'>
+            <Form.Item name='priceFactor' label='Hệ Số giá'   rules={[{ required: true, message: 'Không được bỏ trống !' }]}>
               <InputNumber placeholder='Hệ Số giá Xe' className='w-full' />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name='licensePlate' label='Biển Số Xe'>
+            <Form.Item name='licensePlate' label='Biển Số Xe'   rules={[{ required: true, message: 'Không được bỏ trống !' }]}>
               <Input placeholder='Biển Số  Xe' className='w-full' />
             </Form.Item>
           </Col>

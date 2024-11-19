@@ -186,6 +186,17 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
       ...getColumnSearchProps('busTypeName' as unknown as IProduct)
     },
     {
+      title: 'Loại xe ',
+      dataIndex: 'busTypeName',
+      key: 'busTypeName',
+      width: 180,
+      render: (sizes: ISizeRefProduct[]) => (
+        <>
+          <p className=''>{sizes}</p>
+        </>
+      )
+    },
+    {
       title: 'Số Ghế  ',
       dataIndex: 'seatCapacity',
       key: 'seatCapacity',
@@ -197,7 +208,7 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
       )
     },
     {
-      title: 'price Factor',
+      title: 'Hệ số giá',
       width: 180,
       dataIndex: 'seatCapacity',
       key: 'seatCapacity',

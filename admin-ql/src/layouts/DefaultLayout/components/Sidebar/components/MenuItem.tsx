@@ -30,7 +30,7 @@ export const items: MenuProps['items'] = [
 
   // quản lý sản phẩm
   getItem('Quản lý', 'manager', <AiOutlineControl />, [
-    getItem(<NavLink to={`/manager/products`}>Chuyến Xe</NavLink>, 'products', <ShoppingOutlined />),
+    getItem(<NavLink to={`/manager/products`}> Xe</NavLink>, 'products', <ShoppingOutlined />),
     getItem(<NavLink to={`/manager/categories`}>Tuyến đường</NavLink>, 'categories', <BiSolidCategoryAlt />),
     getItem(<NavLink to={`/manager/toppings`}>Giờ chạy</NavLink>, 'toppings', <HiCollection />),
     getItem(<NavLink to={`/manager/sizes`}>Ghế xe</NavLink>, 'sizes', <AiOutlineFontSize />),
@@ -38,8 +38,7 @@ export const items: MenuProps['items'] = [
   ]),
   // quản lý người dùng
   getItem('Người dùng', 'users', <UserOutlined />, [
-    getItem(<NavLink to={`/manager/customers`}>Khách hàng</NavLink>, 'customers', <FaUserFriends />),
-    getItem(<NavLink to={`/manager/staffs`}>Nhân viên</NavLink>, 'staffs', <FaUserEdit />)
+    getItem(<NavLink to={`/manager/customers`}>Người dùng</NavLink>, 'customers', <FaUserFriends />),
   ])
 ]
 export const itemsStaff: MenuProps['items'] = [
@@ -48,7 +47,7 @@ export const itemsStaff: MenuProps['items'] = [
 
   // quản lý sản phẩm
   getItem('Quản lý', 'manager', <AiOutlineControl />, [
-    getItem(<NavLink to={`/manager/products`}>Chuyến xe</NavLink>, 'products', <ShoppingOutlined />),
+    getItem(<NavLink to={`/manager/products`}> xe</NavLink>, 'products', <ShoppingOutlined />),
     getItem(<NavLink to={`/manager/categories`}>Tuyến đường</NavLink>, 'categories', <BiSolidCategoryAlt />),
     getItem(<NavLink to={`/manager/toppings`}>Giờ chạy</NavLink>, 'toppings', <HiCollection />),
     // getItem(<NavLink to={`/manager/sizes`}>Sizes</NavLink>, 'sizes', <AiOutlineFontSize />),

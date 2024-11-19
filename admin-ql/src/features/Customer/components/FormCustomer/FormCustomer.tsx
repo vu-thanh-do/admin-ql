@@ -163,14 +163,17 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
           >
             <Form.Item
               className='dark:text-white'
-              label='Tên khách hàng'
+              label='UserName'
               name='userName'
               rules={[
-                { required: true, message: 'Không được bỏ trống tên khách hàng!' },
+                { required: true, message: 'Không được bỏ trống UserName!' },
                 {
                   validator: (_, value, callback) => {
                     if (value && value.trim() === '') {
                       callback('Không được để trống')
+                    }
+                    if (value && /[^a-zA-Z0-9\s]/.test(value)) {
+                      callback('UserName không được chứa ký tự đặc biệt!')
                     } else {
                       callback()
                     }
@@ -178,7 +181,7 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
                 }
               ]}
             >
-              <Input size='large' placeholder='Tên người dùng' />
+              <Input size='large' placeholder='UserName' />
             </Form.Item>
 
             {/* {!userData._id && ( */}
@@ -198,7 +201,23 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
               className='dark:text-white'
               label='phoneNumber'
               name='phoneNumber'
-              rules={[{ required: true, message: 'Không được bỏ trống ' }]}
+              rules={[
+                { required: true, message: 'Không được bỏ trống số điện thoại!' },
+                {
+                  validator: (_, value) => {
+                    if (value && value.trim() === '') {
+                      return Promise.reject('Không được để trống!')
+                    }
+                    if (value && !/^\d+$/.test(value)) {
+                      return Promise.reject('Số điện thoại chỉ được chứa chữ số!')
+                    }
+                    if (value && value.length !== 10) {
+                      return Promise.reject('Số điện thoại phải đúng 10 chữ số!')
+                    }
+                    return Promise.resolve()
+                  }
+                }
+              ]}
             >
               <Input type='text' size='large' placeholder='phoneNumber' />
             </Form.Item>
@@ -206,7 +225,20 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
               className='dark:text-white'
               label='fullName'
               name='fullName'
-              rules={[{ required: true, message: 'Không được bỏ trống ' }]}
+              rules={[
+                { required: true, message: 'Không được bỏ trống họ và tên!' },
+                {
+                  validator: (_, value) => {
+                    if (value && value.trim() === '') {
+                      return Promise.reject('Không được để trống!');
+                    }
+                    if (value && /[^a-zA-Z\s]/.test(value)) {
+                      return Promise.reject('Họ và tên chỉ được chứa chữ cái và khoảng trắng!');
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}
             >
               <Input type='text' size='large' placeholder='fullName' />
             </Form.Item>
@@ -214,7 +246,23 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
               className='dark:text-white'
               label='cccd'
               name='cccd'
-              rules={[{ required: true, message: 'Không được bỏ trống ' }]}
+              rules={[
+                { required: true, message: 'Không được bỏ trống CCCD!' },
+                {
+                  validator: (_, value) => {
+                    if (value && value.trim() === '') {
+                      return Promise.reject('Không được để trống!');
+                    }
+                    if (value && !/^\d+$/.test(value)) {
+                      return Promise.reject('CCCD chỉ được chứa chữ số!');
+                    }
+                    if (value && value.length !== 12) {
+                      return Promise.reject('CCCD phải đúng 12 chữ số!');
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}
             >
               <Input type='text' size='large' placeholder='cccd' />
             </Form.Item>
