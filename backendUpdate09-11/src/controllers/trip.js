@@ -120,11 +120,7 @@ const TripController = {
       const route = await BusRoutes.findById(data.route).exec();
       const bus = await Bus.findById(data.bus).exec();
 
-      if (route || bus) {
-        return res.status(400).json({
-          message: "An error occurred, please try again",
-        });
-      }
+    
 
       const trip = await Trip.findByIdAndDelete(id).exec();
 

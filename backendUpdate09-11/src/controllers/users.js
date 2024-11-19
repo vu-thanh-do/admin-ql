@@ -101,19 +101,38 @@ const UserController = {
     try {
       const { page = PAGINATION.PAGE, limit = PAGINATION.LIMIT } = req.query;
 
+      // Lấy danh sách người dùng
       const users = await User.find()
         .sort("-createdAt")
         .skip((page - 1) * limit)
         .limit(limit * 1)
         .exec();
 
+      // Lấy tổng số người dùng để tính tổng số trang
       const count = await User.countDocuments();
-
       const totalPage = Math.ceil(count / limit);
       const currentPage = Number(page);
 
+      // Lấy danh sách quyền tương ứng với userIds
+      const userIds = users.map((user) => user._id);
+      const permissions = await Permission.find({
+        user: { $in: userIds },
+      }).exec();
+
+      // Tạo một map để ánh xạ userId với role
+      const permissionMap = permissions.reduce((acc, permission) => {
+        acc[permission.user] = permission.role;
+        return acc;
+      }, {});
+
+      // Gắn thông tin role vào danh sách người dùng
+      const usersWithRoles = users.map((user) => ({
+        ...user.toJSON(),
+        role: permissionMap[user._id] || null, // Nếu không tìm thấy role thì để null
+      }));
+
       res.json({
-        data: users,
+        data: usersWithRoles,
         totalPage,
         currentPage,
       });

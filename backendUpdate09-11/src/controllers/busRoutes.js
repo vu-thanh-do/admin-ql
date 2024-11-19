@@ -105,6 +105,7 @@ const BusRouteController = {
   updateBusRoute: async (req, res) => {
     try {
       const { id } = req.params;
+      console.log( req.body)
       const {
         startProvince,
         startDistrict,
