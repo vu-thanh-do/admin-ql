@@ -1,4 +1,4 @@
-import { Drawer, Form, Image, Input, Select } from 'antd'
+import { Drawer, Form, Image, Input, Radio, Select } from 'antd'
 import { RootState, useAppDispatch } from '~/store/store'
 import { useAddUserMutation, useUpLoadAvartaUserMutation, useUpdateUserMutation } from '~/store/services/Users'
 import { useEffect, useState } from 'react'
@@ -115,7 +115,7 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
   return (
     <Drawer
       className='dark:!text-white dark:bg-black'
-      title={userData._id ? 'Cập nhật thông tin khách hàng' : 'Thêm khách hàng mới'}
+      title={userData._id ? 'Cập nhật thông tin người dùng' : 'Thêm người dùng mới'}
       size='large'
       destroyOnClose
       onClose={() => {
@@ -199,7 +199,7 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
             {/* )} */}
             <Form.Item
               className='dark:text-white'
-              label='phoneNumber'
+              label='Số điện thoại'
               name='phoneNumber'
               rules={[
                 { required: true, message: 'Không được bỏ trống số điện thoại!' },
@@ -210,6 +210,9 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
                     }
                     if (value && !/^\d+$/.test(value)) {
                       return Promise.reject('Số điện thoại chỉ được chứa chữ số!')
+                    }
+                    if (value && !/^0\d{9}$/.test(value)) {
+                      return Promise.reject('Số điện thoại phải bắt đầu bằng số 0!')
                     }
                     if (value && value.length !== 10) {
                       return Promise.reject('Số điện thoại phải đúng 10 chữ số!')
@@ -223,48 +226,58 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
             </Form.Item>
             <Form.Item
               className='dark:text-white'
-              label='fullName'
+              label='Họ và tên'
               name='fullName'
               rules={[
                 { required: true, message: 'Không được bỏ trống họ và tên!' },
                 {
                   validator: (_, value) => {
                     if (value && value.trim() === '') {
-                      return Promise.reject('Không được để trống!');
+                      return Promise.reject('Không được để trống!')
                     }
-                    if (value && /[^a-zA-Z\s]/.test(value)) {
-                      return Promise.reject('Họ và tên chỉ được chứa chữ cái và khoảng trắng!');
-                    }
-                    return Promise.resolve();
-                  },
-                },
+
+                    return Promise.resolve()
+                  }
+                }
               ]}
             >
               <Input type='text' size='large' placeholder='fullName' />
             </Form.Item>
             <Form.Item
               className='dark:text-white'
-              label='cccd'
+              label='Số căn cước công dân'
               name='cccd'
               rules={[
                 { required: true, message: 'Không được bỏ trống CCCD!' },
                 {
                   validator: (_, value) => {
                     if (value && value.trim() === '') {
-                      return Promise.reject('Không được để trống!');
+                      return Promise.reject('Không được để trống!')
                     }
                     if (value && !/^\d+$/.test(value)) {
-                      return Promise.reject('CCCD chỉ được chứa chữ số!');
+                      return Promise.reject('CCCD chỉ được chứa chữ số!')
                     }
                     if (value && value.length !== 12) {
-                      return Promise.reject('CCCD phải đúng 12 chữ số!');
+                      return Promise.reject('CCCD phải đúng 12 chữ số!')
                     }
-                    return Promise.resolve();
-                  },
-                },
+                    return Promise.resolve()
+                  }
+                }
               ]}
             >
               <Input type='text' size='large' placeholder='cccd' />
+            </Form.Item>
+            <Form.Item
+              className='dark:text-white'
+              label='Phân quyền người dùng'
+              name='role'
+              rules={[{ required: true, message: 'Không được bỏ trống phân quyền!' }]}
+            >
+              <Radio.Group className='ml-2'>
+                <Radio value='admin'>Quản trị viên</Radio> <br /> <br />
+                <Radio value='user'>Nhân viên</Radio> <br /> <br />
+                <Radio value='guest'>Khách hàng</Radio>
+              </Radio.Group>
             </Form.Item>
             {!userData._id && (
               <Form.Item

@@ -26,11 +26,11 @@ export const useRenderCategory = (categories: ICategory[], isDeleted?: boolean) 
   const columnsStaff: ColumnsType<ICategory> = [
     {
       title: 'id tuyến',
-      dataIndex: '_id',
-      key: '_id',
+      dataIndex: 'index',
+      key: 'index',
       width: 150,
       render: (text: any) => {
-        return <div>{text.slice(0, 6)}</div>
+        return <div>{text}</div>
       }
     },
     {
@@ -65,6 +65,14 @@ export const useRenderCategory = (categories: ICategory[], isDeleted?: boolean) 
       title: 'Trạng thái tuyến',
       dataIndex: 'status',
       key: 'status',
+       filterSearch: true,
+      filters: Array.from(new Set(categories?.map((item: any) => item.status))).map((status: any) => ({
+        text: status,
+        value: status
+      })),
+      onFilter: (value: any, record: any) => {
+        return record.status  === value
+      },
     }
   ]
 

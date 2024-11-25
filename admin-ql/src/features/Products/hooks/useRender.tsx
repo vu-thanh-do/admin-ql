@@ -178,12 +178,22 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
       key: 'index',
       width: 50
     },
-    {
-      title: 'Tên Xe',
-      dataIndex: 'busTypeName',
-      key: 'busTypeName',
-      width: 270,
-      ...getColumnSearchProps('busTypeName' as unknown as IProduct)
+    // {
+    //   title: 'Tên Xe',
+    //   dataIndex: 'busTypeName',
+    //   key: 'busTypeName',
+    //   width: 270,
+    //   ...getColumnSearchProps('busTypeName' as unknown as IProduct)
+    // },
+      {
+      title: 'biển số xe',
+      dataIndex: 'licensePlate',
+      key: 'licensePlate',
+        width: 120,
+      filterSearch: true,
+      filters: productsList?.map((item :any) => ({ text: item.licensePlate, value: item.licensePlate })),
+      onFilter: (value: any, record: any) => record.licensePlate === value,
+      render: (category: ICategoryRefProduct) => <p className='capitalize'>{category}</p>
     },
     {
       title: 'Loại xe ',
@@ -221,13 +231,7 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
       }
     },
 
-    {
-      title: 'biển số xe',
-      dataIndex: 'licensePlate',
-      key: 'licensePlate',
-      width: 120,
-      render: (category: ICategoryRefProduct) => <p className='capitalize'>{category}</p>
-    }
+
   ]
 
   /* column admin */

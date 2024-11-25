@@ -1,4 +1,4 @@
-import { Drawer, Form, Input, DatePicker, message } from 'antd'
+import { Drawer, Form, Input, DatePicker, message, Select, InputNumber } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 import { RootState, useAppDispatch } from '~/store/store'
 import { setCategory, setOpenDrawer } from '~/store/slices'
@@ -7,7 +7,8 @@ import { useAppSelector } from '~/store/hooks'
 import { useAddCategoryMutation, useUpdateCategoryMutation } from '~/store/services'
 import { messageAlert } from '~/utils/messageAlert'
 import moment from 'moment'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 type FormCategoryProps = {
   open: boolean
@@ -19,7 +20,7 @@ const FormCategory = ({ open }: FormCategoryProps) => {
   const [addCategory, { isLoading: isAdding }] = useAddCategoryMutation()
   const [updateCategory, { isLoading: isUpdating }] = useUpdateCategoryMutation()
   const { cateData } = useAppSelector((state: RootState) => state.categories)
-console.log(cateData,'cateData')
+  console.log(cateData, 'cateData')
   useEffect(() => {
     if (cateData._id) {
       form.setFieldsValue({
@@ -30,7 +31,7 @@ console.log(cateData,'cateData')
   }, [cateData])
 
   const onFinish = async (values: any) => {
-    console.log(values,'ccc')
+    console.log(values, 'ccc')
     const formattedValues = {
       ...values,
       duration: values.duration ? values.duration.toISOString() : null // Chuyển đổi thành ISO string
@@ -62,6 +63,18 @@ console.log(cateData,'cateData')
     dispatch(setCategory({}))
     form.resetFields()
   }
+  const [dataTt, setDataTt] = useState([])
+  useEffect(() => {
+    const handelFetch = async () => {
+      try {
+        const { data } = await axios.get('https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1')
+        setDataTt(data?.data?.data)
+      } catch (error) {
+        //
+      }
+    }
+    handelFetch()
+  }, [])
   return (
     <Drawer
       title={cateData._id ? 'Cập nhật Tuyến đường' : 'Thêm Tuyến đường mới'}
@@ -84,7 +97,16 @@ console.log(cateData,'cateData')
           name='startProvince'
           rules={[{ required: true, message: 'Vui lòng nhập tỉnh/thành phố xuất phát!' }]}
         >
-          <Input size='large' placeholder='Tỉnh/Thành phố xuất phát' />
+          <Select placeholder='Tỉnh/Thành phố xuất phát'>
+            {dataTt?.map((itc: any) => {
+              return (
+                <Select.Option key={itc._id} value={itc.name}>
+                  {itc.name}
+                </Select.Option>
+              )
+            })}
+          </Select>
+          {/* <Input size='large' placeholder='Tỉnh/Thành phố xuất phát' /> */}
         </Form.Item>
 
         <Form.Item
@@ -100,7 +122,15 @@ console.log(cateData,'cateData')
           name='endProvince'
           rules={[{ required: true, message: 'Vui lòng nhập tỉnh/thành phố đến!' }]}
         >
-          <Input size='large' placeholder='Tỉnh/Thành phố đến' />
+          <Select placeholder='Tỉnh/Thành phố đến'>
+            {dataTt?.map((itc: any) => {
+              return (
+                <Select.Option key={itc._id} value={itc.name}>
+                  {itc.name}
+                </Select.Option>
+              )
+            })}
+          </Select>
         </Form.Item>
 
         <Form.Item label='Điểm đến' name='endDistrict' rules={[{ required: true, message: 'Vui lòng nhập điểm đến!' }]}>
@@ -112,23 +142,53 @@ console.log(cateData,'cateData')
         </Form.Item>
 
         <Form.Item label='Trạng thái' name='status' rules={[{ required: true, message: 'Vui lòng nhập trạng thái!' }]}>
-          <Input size='large' placeholder='Trạng thái (OPEN/CLOSED)' />
+          {/* <Input size='large' placeholder='Trạng thái (OPEN/CLOSED)' /> */}
+          <Select placeholder='Trạng thái'>
+            <Select.Option value={'OPEN'}>OPEN</Select.Option>
+            <Select.Option value={'CLOSED'}>CLOSED</Select.Option>
+          </Select>
         </Form.Item>
 
         <Form.Item
           label='Khoảng cách (km)'
           name='distance'
-          rules={[{ required: true, message: 'Vui lòng nhập khoảng cách!' }]}
+          rules={[
+            { required: true, message: 'Vui lòng nhập khoảng cách!' },
+            {
+              type: 'number',
+              min: 1,
+              message: 'Khoảng cách phải là số không âm!'
+            }
+          ]}
         >
-          <Input size='large' placeholder='Khoảng cách (km)' />
+          <InputNumber
+            size='large'
+            placeholder='Khoảng cách (km)'
+            className='w-full'
+            min={1} // Giá trị tối thiểu là 0
+            parser={(value) => value?.replace(/[^\d]/g, '')} // Loại bỏ ký tự không phải số
+          />
         </Form.Item>
 
         <Form.Item
           label='Giá mỗi km'
           name='pricePerKM'
-          rules={[{ required: true, message: 'Vui lòng nhập giá mỗi km!' }]}
+          rules={[
+            { required: true, message: 'Vui lòng nhập giá mỗi km!' },
+            {
+              type: 'number',
+              min: 1,
+              message: 'phải là số không âm!'
+            }
+          ]}
         >
-          <Input size='large' placeholder='Giá mỗi km (VND)' />
+          <InputNumber
+            size='large'
+            className='w-full'
+            placeholder='Giá mỗi km (VND)'
+            min={1} // Giá trị tối thiểu là 0
+            parser={(value) => value?.replace(/[^\d]/g, '')} // Loại bỏ ký tự không phải số
+          />
         </Form.Item>
 
         <Form.Item>

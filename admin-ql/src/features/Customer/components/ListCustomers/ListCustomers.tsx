@@ -1,6 +1,6 @@
 import { SearchOutlined } from '@ant-design/icons'
 import type { InputRef } from 'antd'
-import { Button as ButtonAnt, Image, Input, Modal, Popconfirm, Space, Table, Tooltip } from 'antd'
+import { Button as ButtonAnt, Image, Input, Modal, Popconfirm, Space, Table, Tag, Tooltip } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import type { FilterConfirmProps } from 'antd/es/table/interface'
 import { ColumnType } from 'antd/lib/table'
@@ -164,15 +164,34 @@ export const ListCustomers = () => {
       title: 'Phân quyền',
       dataIndex: 'role',
       key: 'role',
-      width: 90,
+      filterSearch: true,
+      filters: Array.from(new Set(customersData?.data?.map((item: any) => item.role))).map((role: any) => ({
+        text: role,
+        value: role
+      })),
+      onFilter: (value: any, record: any) => {
+        console.log(record, 'record')
+        console.log(value, 'value')
+        return record.role  === value
+      },
       render: (phoneNumber: string) => <span>{phoneNumber}</span>
     },
     {
-      title: 'SĐT',
+      title: 'Số điện thoại',
       dataIndex: 'phoneNumber',
       key: 'phoneNumber',
-      width: 90,
+       filterSearch: true,
+      filters: customersData?.data?.map((item :any) => ({ text: item.phoneNumber, value: item._id })),
+      onFilter: (value: any, record: any) => record._id === value,
       render: (phoneNumber: string) => <span>{phoneNumber}</span>
+    },
+    {
+      title: 'Trạng thái xác minh',
+      dataIndex: 'isVerified',
+      key: 'isVerified',
+      render: (phoneNumber: string) => (
+        <Tag color={phoneNumber ? 'green' : 'error'}>{phoneNumber ? 'Đã xác minh' : 'Chưa xác minh'}</Tag>
+      )
     },
     {
       // title: <span className='block text-center'>Action</span>,
@@ -192,7 +211,7 @@ export const ListCustomers = () => {
                 }}
               />
             </Tooltip>
-            <Tooltip title='Xóa người dùng này'>
+            {/* <Tooltip title='Xóa người dùng này'>
               <Popconfirm
                 title='Bạn có muốn xóa khách hàng này?'
                 okButtonProps={{ style: { backgroundColor: '#3C50E0', color: '#fff' } }}
@@ -205,7 +224,7 @@ export const ListCustomers = () => {
                   icon={<BsFillTrashFill />}
                 />
               </Popconfirm>
-            </Tooltip>
+            </Tooltip> */}
           </Space>
         </div>
       )

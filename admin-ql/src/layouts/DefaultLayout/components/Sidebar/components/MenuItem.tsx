@@ -33,7 +33,7 @@ export const items: MenuProps['items'] = [
     getItem(<NavLink to={`/manager/products`}> Xe</NavLink>, 'products', <ShoppingOutlined />),
     getItem(<NavLink to={`/manager/categories`}>Tuyến đường</NavLink>, 'categories', <BiSolidCategoryAlt />),
     getItem(<NavLink to={`/manager/trips`}> chuyến xe </NavLink>, 'trips', <HiCollection />),
-    getItem(<NavLink to={`/manager/sizes`}>Ghế xe</NavLink>, 'sizes', <AiOutlineFontSize />),
+    // getItem(<NavLink to={`/manager/sizes`}>Ghế xe</NavLink>, 'sizes', <AiOutlineFontSize />),
     getItem(<NavLink to={`/manager/vouchers`}>Vouchers</NavLink>, 'vouchers', <IoTicket />)
   ]),
   // quản lý người dùng

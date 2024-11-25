@@ -18,6 +18,7 @@ import { Loading } from '~/components'
 import { handleUploadImage } from '../..'
 import { useAppSelector } from '~/store/hooks'
 import moment from 'moment'
+import dayjs from 'dayjs'
 const { Option } = Select
 const FormProduct = () => {
   const [form] = Form.useForm()
@@ -144,7 +145,7 @@ const FormProduct = () => {
                 {dataProducts?.data?.map((size) => (
                   <Option value={size._id} key={size._id}>
                     <span className='text-sm capitalize'>
-                      <span className='capitalize'>{size.busTypeName}</span>
+                      <span className='capitalize'>{size.licensePlate}</span>
                     </span>
                   </Option>
                 ))}
@@ -178,7 +179,31 @@ const FormProduct = () => {
               label='Giờ khởi hành'
               rules={[{ required: true, message: 'Giờ khởi hành là bắt buộc' }]}
             >
-              <DatePicker showTime format='YYYY-MM-DD HH:mm:ss' className='w-full' />
+              <DatePicker
+                showTime
+                format='YYYY-MM-DD HH:mm:ss'
+                className='w-full'
+                disabledDate={(current) => {
+                  return current && current.isBefore(dayjs().startOf('day'), 'day')
+                }}
+                disabledTime={(current) => {
+                  if (current && current.isSame(dayjs(), 'day')) {
+                    const now = dayjs()
+                    return {
+                      disabledHours: () => Array.from({ length: 24 }, (_, i) => i).filter((hour) => hour < now.hour()),
+                      disabledMinutes: (hour) =>
+                        hour === now.hour()
+                          ? Array.from({ length: 60 }, (_, i) => i).filter((minute) => minute < now.minute())
+                          : [],
+                      disabledSeconds: (hour, minute) =>
+                        hour === now.hour() && minute === now.minute()
+                          ? Array.from({ length: 60 }, (_, i) => i).filter((second) => second < now.second())
+                          : []
+                    }
+                  }
+                  return {} // Nếu không phải ngày hôm nay, không tắt thời gian
+                }}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>

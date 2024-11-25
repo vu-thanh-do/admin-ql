@@ -161,176 +161,105 @@ const FormProduct = () => {
           <Col span={12}>
             <Form.Item
               name='busTypeName'
-              label='Tên Xe'
+              label='Loại Xe'
               rules={[
-                { required: true, message: 'Tên Xe là bắt buộc!' },
+                { required: true, message: 'Loại Xe là bắt buộc!' },
                 {
                   validator: (_, value) => {
                     if (value.trim() === '') {
-                      return Promise.reject('Tên Xe không được chứa toàn khoảng trắng!')
+                      return Promise.reject('Loại Xe không được chứa toàn khoảng trắng!')
                     }
                     return Promise.resolve()
                   }
                 }
               ]}
             >
-              <Input placeholder='Tên Xe' size='large' />
+              <Input placeholder='Loại Xe' size='large' />
             </Form.Item>
           </Col>
-          {/* <Col span={12}>
-            <Form.Item
-              name='category'
-              label='Tên Tuyến đường'
-              rules={[{ required: true, message: 'Tuyến đường là bắt buộc' }]}
-            >
-              <Select placeholder='Tuyến đường' size='large'>
-                {categories.map((category) => (
-                  <Option value={category._id} key={category._id}>
-                    <span className='text-sm capitalize'>{category.name}</span>
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-          </Col> */}
         </Row>
-        {/* <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              name='toppings'
-              label='Chọn khung giờ'
-              rules={[{ required: true, message: 'Khung giờ là bắt buộc' }]}
-            >
-              <Select size='large' mode='multiple' allowClear placeholder='Lựa chọn Khung giờ'>
-                {toppings.map((topping) => (
-                  <Select.Option value={topping._id} key={topping._id}>
-                    <span className='capitalize'>{topping.name}</span>
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name='is_active'
-              label='Trạng thái Xe'
-              rules={[{ required: true, message: 'Trạng thái Xe là bắt buộc' }]}
-            >
-              <Select placeholder='Chọn trạng thái Xe' size='large'>
-                <Option value={false}>Riêng tư</Option>
-                <Option value={true}>Công khai</Option>
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row> */}
-        {/* <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item className='w-full' label='Ghế Xe'>
-              <Form.List name='size'>
-                {(fields, { add, remove }) => (
-                  <>
-                    {fields.map(({ key, name, ...restField }) => (
-                      <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align='baseline'>
-                        <Form.Item
-                          {...restField}
-                          name={[name, 'name']}
-                          rules={[{ required: true, message: 'Tên Ghế là bắt buộc' }]}
-                        >
-                          <Input size='large' placeholder='tên Ghế' />
-                        </Form.Item>
-                        <Form.Item
-                          {...restField}
-                          name={[name, 'price']}
-                          rules={[{ required: true, message: 'Giá Ghế là bắt buộc' }]}
-                        >
-                          <InputNumber size='large' placeholder='Giá Ghế của Xe' className='w-full' />
-                        </Form.Item>
-                        <MinusCircleOutlined onClick={() => remove(name)} />
-                      </Space>
-                    ))}
-                    <Form.Item>
-                      <Button type='dashed' onClick={() => add()} block icon={<PlusOutlined />} size='large'>
-                        Thêm trường Ghế
-                      </Button>
-                    </Form.Item>
-                  </>
-                )}
-              </Form.List>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item className='w-full' label='Loại Xe'>
-              <Form.List name='kindOfRoom'>
-                {(fields, { add, remove }) => (
-                  <>
-                    {fields.map(({ key, name, ...restField }) => (
-                      <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align='baseline'>
-                        <Form.Item
-                          {...restField}
-                          name={[name, 'name']}
-                          rules={[{ required: true, message: 'Tên Xe là bắt buộc' }]}
-                        >
-                          <Input size='large' placeholder='tên Xe' />
-                        </Form.Item>
-                        <Form.Item
-                          {...restField}
-                          name={[name, 'price']}
-                          rules={[{ required: true, message: 'Giá Xe là bắt buộc' }]}
-                        >
-                          <InputNumber size='large' placeholder='Giá Xe của Xe' className='w-full' />
-                        </Form.Item>
-                        <MinusCircleOutlined onClick={() => remove(name)} />
-                      </Space>
-                    ))}
-                    <Form.Item>
-                      <Button type='dashed' onClick={() => add()} block icon={<PlusOutlined />} size='large'>
-                        Thêm loại
-                      </Button>
-                    </Form.Item>
-                  </>
-                )}
-              </Form.List>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name='sizeDefault'
-              label='Ghế mặc định'
-              rules={[{ required: productEdit ? false : true, message: 'Ghế là bắt buộc' }]}
-            >
-              <Select placeholder='Chọn ghế' size='large' mode='multiple' allowClear>
-                {sizeDefault.map((size) => (
-                  <Option value={size._id} key={size._id}>
-                    <span className='text-sm capitalize'>
-                      <span className='capitalize'>{size.name}</span>
-                      <span className='ml-2'>- {size.price.toLocaleString()}đ</span>
-                    </span>
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row> */}
+
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
               name='seatCapacity'
               label='Số ghế'
-              rules={[{ required: true, message: 'Không được bỏ trống !' }]}
+              rules={[
+                { required: true, message: 'Không được bỏ trống!' },
+                {
+                  type: 'number',
+                  min: 1,
+                  message: 'Số ghế phải là số lớn hơn 0!'
+                }
+              ]}
             >
-              <InputNumber placeholder='Số ghế Xe' className='w-full' />
+              {/* <InputNumber
+                placeholder='Số ghế Xe'
+                className='w-full'
+                min={1} // Đảm bảo giá trị tối thiểu là 1
+                parser={(value) => value?.replace(/[^\d]/g, '')}
+              /> */}
+             <Select>
+                <Select.Option value={16}>16</Select.Option>
+                <Select.Option value={24}>24</Select.Option>
+                <Select.Option value={36}>36</Select.Option>
+              </Select>
+
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name='priceFactor' label='Hệ Số giá'   rules={[{ required: true, message: 'Không được bỏ trống !' }]}>
-              <InputNumber placeholder='Hệ Số giá Xe' className='w-full' />
+            <Form.Item
+              name='priceFactor'
+              label='Hệ Số giá'
+              rules={[
+                { required: true, message: 'Hệ Số giá Không được bỏ trống!' },
+                {
+                  type: 'number',
+                  min: 1,
+                  message: 'Hệ Số giá phải là số lớn hơn 0!'
+                }
+              ]}
+            >
+              {/* <InputNumber
+                placeholder='Hệ Số giá Xe'
+                className='w-full'
+                min={1} // Đảm bảo giá trị tối thiểu là 1
+                parser={(value) => value?.replace(/[^\d]/g, '')}
+              /> */}
+              <Select>
+                <Select.Option value={1}>1.0</Select.Option>
+                <Select.Option value={1.2}>1.2</Select.Option>
+                <Select.Option value={1.5}>1.5</Select.Option>
+              </Select>
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name='licensePlate' label='Biển Số Xe'   rules={[{ required: true, message: 'Không được bỏ trống !' }]}>
+            <Form.Item
+              name='licensePlate'
+              label='Biển Số Xe'
+              rules={[
+                { required: true, message: 'Không được bỏ trống!' },
+                {
+                  pattern: /^[0-9]{2}[A-Z]{1,2}-\d{3,5}(\.\d{2})?$/,
+                  message: 'Biển số xe không đúng định dạng!  định dạng đúng (VD: 30A-12345 hoặc 29C-567.89)'
+                },
+                {
+                  validator: (_, value) => {
+                    if (value) {
+                      const provinceCode = parseInt(value.slice(0, 2), 10)
+                      if (provinceCode < 1 || provinceCode > 99) {
+                        return Promise.reject('Mã tỉnh phải từ 01 đến 99!')
+                      }
+                    }
+                    return Promise.resolve()
+                  }
+                }
+              ]}
+            >
               <Input placeholder='Biển Số  Xe' className='w-full' />
             </Form.Item>
           </Col>

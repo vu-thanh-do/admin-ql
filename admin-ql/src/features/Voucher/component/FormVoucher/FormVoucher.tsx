@@ -141,7 +141,7 @@ const VoucherAdd = ({ open }: VoucherAddProps) => {
             }
           ]}
         >
-          <Input size='large' placeholder='Số lượng giảm giá ' />
+          <InputNumber className='w-full' min={1} size='large' placeholder='Số lượng giảm giá ' />
         </Form.Item>
         <Form.Item
           className='dark:text-white'
@@ -150,10 +150,7 @@ const VoucherAdd = ({ open }: VoucherAddProps) => {
           rules={[{ required: true, message: 'Không được bỏ trống!' }]}
         >
           <Select placeholder='Kiểu' size='large'>
-            <Select.Option value='AMOUNT'>
-              <span className='text-sm capitalize'>AMOUNT</span>
-            </Select.Option>
-            <Select.Option value='PERCENT'>
+            <Select.Option  value='PERCENT'>
               <span className='text-sm capitalize'>PERCENT</span>
             </Select.Option>
           </Select>

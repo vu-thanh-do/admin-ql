@@ -41,7 +41,7 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
     setSearchText(selectedKeys[0])
     setSearchedColumn(dataIndex.name)
   }
-  function formatDateTime(dateString: string): JSX.Element  {
+  function formatDateTime(dateString: string): JSX.Element {
     const date = new Date(dateString)
     // Lấy các giá trị giờ, phút, ngày, tháng, năm
     const hours = date.getHours().toString().padStart(2, '0')
@@ -193,12 +193,12 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
   const columnsStaff: any = [
     {
       title: 'id chuyến',
-      dataIndex: '_id',
-      key: '_id',
+      dataIndex: 'index',
+      key: 'index',
       width: 50,
       render: (sizes: any) => (
         <>
-          <p className=''>{sizes?.slice(0, 6)}</p>
+          <p className=''>{sizes}</p>
         </>
       )
     },
@@ -207,6 +207,14 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
       dataIndex: 'departureTime',
       key: 'departureTime',
       width: 150,
+      filterSearch: true,
+      filters: Array.from(new Set(productsList?.map((item: any) => item.departureTime))).map((departureTime: any) => ({
+        text: formatDateTime(departureTime),
+        value: departureTime
+      })),
+      onFilter: (value: any, record: any) => {
+        return record.departureTime === value
+      },
       render: (sizes: any) => (
         <>
           <p className=''>{formatDateTime(sizes)}</p>
@@ -218,7 +226,7 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
       dataIndex: 'arrivalTime',
       key: 'arrivalTime',
       width: 150,
-      render: (sizes:any) => (
+      render: (sizes: any) => (
         <>
           <p className=''>{formatDateTime(sizes)}</p>
         </>
@@ -229,9 +237,22 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
       dataIndex: 'route',
       key: 'route',
       width: 150,
+      filterSearch: true,
+      filters: Array.from(
+        new Set(productsList?.map((item: any) => `${item.route.startProvince} - ${item.route.endProvince}`))
+      ).map((route: any) => ({
+        text: route,
+        value: route
+      })),
+      onFilter: (value: any, record: any) => {
+        const route = `${record.route.startProvince} - ${record.route.endProvince}`
+        return route === value
+      },
       render: (sizes: any) => (
         <>
-          <p className=''>{sizes?.startProvince} đến <br/> {sizes?.endProvince}</p>
+          <p className=''>
+            {sizes?.startProvince} đến <br /> {sizes?.endProvince}
+          </p>
         </>
       )
     },
@@ -243,7 +264,9 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
       render: (seatCapacity: any) => {
         return (
           <>
-            <p className=''>{seatCapacity?.busTypeName} <br/> {seatCapacity?.licensePlate}</p>
+            <p className=''>
+              {seatCapacity?.busTypeName} <br /> {seatCapacity?.licensePlate}
+            </p>
           </>
         )
       }
