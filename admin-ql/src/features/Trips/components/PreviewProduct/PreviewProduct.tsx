@@ -39,11 +39,10 @@ const PreviewProduct = () => {
   const [checkCreate, setCheckCreate] = useState(false)
   const [checkEdit, setCheckEdit] = useState(false)
   const [dataDetail, setDataDetail] = useState<any>(null)
-
   const accessToken = localStorage.getItem('token')
   const fetchSeat = async () => {
     try {
-      const { data } = await axios.get(`${import.meta.env.VITE_API}/seats?bus=${product?._id}&page=1`, {
+      const { data } = await axios.get(`${import.meta.env.VITE_API}/seats?bus=${product?.bus?._id}&page=1`, {
         headers: {
           Authorization: `Bearer ${accessToken}`
         }

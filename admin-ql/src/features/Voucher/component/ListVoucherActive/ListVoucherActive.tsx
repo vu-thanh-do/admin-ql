@@ -54,7 +54,7 @@ const ListVoucherActive = () => {
   if (isError) return <NotFound />
   return (
     <div>
-      {user.role === IRoleUser.ADMIN && hasSelected && (
+      {/* {user.role === IRoleUser.ADMIN && hasSelected && (
         <Space>
           <Popconfirm
             title='Bạn thực sự muốn xóa những mã này?'
@@ -67,7 +67,7 @@ const ListVoucherActive = () => {
             </ButtonAntd>
           </Popconfirm>
         </Space>
-      )}
+      )} */}
       <Table
         className='dark:bg-graydark mt-3'
         // columns={columns}

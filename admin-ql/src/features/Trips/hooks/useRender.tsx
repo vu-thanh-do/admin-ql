@@ -196,11 +196,24 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
       dataIndex: 'index',
       key: 'index',
       width: 50,
-      render: (sizes: any) => (
-        <>
-          <p className=''>{sizes}</p>
-        </>
-      )
+      render: (sizes: any, itc:any) =>{
+        console.log(itc,'itcitc')
+        return  (
+          <>
+            <p
+              className='cursor-pointer'
+              onClick={() => {
+        console.log(itc,'itcitc')
+                
+                dispatch(setOpenDrawer(true))
+                dispatch(setProductDetail(itc))
+              }}
+            >
+              {sizes}
+            </p>
+          </>
+        )
+      }
     },
     {
       title: 'Thời gian xuất phát',

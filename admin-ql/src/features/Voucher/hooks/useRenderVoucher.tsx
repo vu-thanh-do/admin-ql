@@ -1,5 +1,5 @@
 import { BsFillPencilFill, BsFillTrashFill } from 'react-icons/bs'
-import { Button as ButtonAntd, Input, InputRef, Popconfirm, Space, Tooltip, message } from 'antd'
+import { Button as ButtonAntd, Input, InputRef, Popconfirm, Space, Tag, Tooltip, message } from 'antd'
 import { IRoleUser, IVoucher } from '~/types'
 import { RootState, useAppDispatch } from '~/store/store'
 import { setOpenDrawer, setVoucher } from '~/store/slices'
@@ -140,7 +140,18 @@ export const useRenderVoucher = () => {
         </span>
       )
     },
-  
+    {
+      title: 'Trạng thái',
+      key: 'action',
+      width: '15%',
+      render: (_: boolean, data: IVoucher) => {
+        const today = dayjs()
+        const endDate = dayjs(data.endDate)
+
+        const status = today.isAfter(endDate) ? 'Expired' : 'Active'
+        return <Tag color={today.isAfter(endDate) ? 'error' : 'green'}>{status}</Tag>
+      }
+    }
   ]
 
   /* admin */
@@ -165,7 +176,7 @@ export const useRenderVoucher = () => {
                 }}
               />
             </Tooltip>
-            <Tooltip title='Xóa voucher này'>
+            {/* <Tooltip title='Xóa voucher này'>
               <Popconfirm
                 title='Bạn có muốn xóa voucher này?'
                 description='Bạn chắc chắn muốn xóa voucher này?'
@@ -180,13 +191,12 @@ export const useRenderVoucher = () => {
                   icon={<BsFillTrashFill />}
                 />
               </Popconfirm>
-            </Tooltip>
+            </Tooltip> */}
           </Space>
         </div>
       )
     }
   ]
   // return user && user.role === IRoleUser.ADMIN ? columnsAdmin : columnsStaff/
-  return columnsAdmin 
-
+  return columnsAdmin
 }
