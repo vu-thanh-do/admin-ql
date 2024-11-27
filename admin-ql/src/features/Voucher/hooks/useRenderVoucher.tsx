@@ -131,6 +131,13 @@ export const useRenderVoucher = () => {
       render: (discount: number) => `${discount}`
     },
     {
+      title: 'số lượng giảm giá ',
+      dataIndex: 'discountAmount',
+      key: 'discountAmount',
+      width: '15%',
+      render: (discount: number) => `${discount}` +'%'
+    },
+    {
       title: 'Thời gian',
       key: 'action',
       width: '15%',

@@ -220,8 +220,8 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
     {
       title: 'Hệ số giá',
       width: 180,
-      dataIndex: 'seatCapacity',
-      key: 'seatCapacity',
+      dataIndex: 'priceFactor',
+      key: 'priceFactor',
       render: (seatCapacity: any) => {
         return (
           <>
@@ -317,7 +317,7 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
                   className='bg-primary hover:text-white flex items-center justify-center text-white'
                 />
               </Tooltip>
-              <Popconfirm
+              {/* <Popconfirm
                 title='Xóa Xe?'
                 description={`Xe sẽ bị xóa'`}
                 onConfirm={() => handleDeleteProductReal(product._id)}
@@ -330,7 +330,7 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
                   danger
                   className='hover:text-white flex items-center justify-center text-white'
                 />
-              </Popconfirm>
+              </Popconfirm> */}
             </Space>
           )
         } else {

@@ -184,8 +184,10 @@ const FormProduct = () => {
                 format='YYYY-MM-DD HH:mm:ss'
                 className='w-full'
                 disabledDate={(current) => {
+                  // Disable dates before today
                   return current && current.isBefore(dayjs().startOf('day'), 'day')
                 }}
+                // Disable times for today
                 disabledTime={(current) => {
                   if (current && current.isSame(dayjs(), 'day')) {
                     const now = dayjs()
@@ -201,14 +203,51 @@ const FormProduct = () => {
                           : []
                     }
                   }
-                  return {} // Nếu không phải ngày hôm nay, không tắt thời gian
+                  return {} // Không vô hiệu hóa thời gian khi không phải ngày hôm nay
                 }}
               />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item name='arrivalTime' label='Giờ đến' rules={[{ required: true, message: 'Giờ đến là bắt buộc' }]}>
-              <DatePicker showTime format='YYYY-MM-DD HH:mm:ss' className='w-full' />
+              <DatePicker showTime format='YYYY-MM-DD HH:mm:ss' className='w-full'  disabledDate={(current) => {
+                  // Disable dates before today
+                  return current && current.isBefore(dayjs().startOf('day'), 'day')
+                }}
+                // Disable times for today
+                disabledTime={(current) => {
+                  if (current && current.isSame(dayjs(), 'day')) {
+                    const now = dayjs()
+                    return {
+                      disabledHours: () => Array.from({ length: 24 }, (_, i) => i).filter((hour) => hour < now.hour()),
+                      disabledMinutes: (hour) =>
+                        hour === now.hour()
+                          ? Array.from({ length: 60 }, (_, i) => i).filter((minute) => minute < now.minute())
+                          : [],
+                      disabledSeconds: (hour, minute) =>
+                        hour === now.hour() && minute === now.minute()
+                          ? Array.from({ length: 60 }, (_, i) => i).filter((second) => second < now.second())
+                          : []
+                    }
+                  }
+                  return {} // Không vô hiệu hóa thời gian khi không phải ngày hôm nay
+                }} />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              name='status'
+              label='trạng thái hoạt động'
+              rules={[
+                { required: true, message: 'rạng thái hoạt động Không được bỏ trống!' },
+              ]}
+            >
+              <Select defaultValue={'khai thác'}>
+                <Select.Option value={'khai thác'}>khai thác</Select.Option>
+                <Select.Option value={'ngừng khai thác'}>ngừng khai thác</Select.Option>
+              </Select>
             </Form.Item>
           </Col>
         </Row>

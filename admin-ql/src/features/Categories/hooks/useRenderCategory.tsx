@@ -25,7 +25,7 @@ export const useRenderCategory = (categories: ICategory[], isDeleted?: boolean) 
   /* staff */
   const columnsStaff: ColumnsType<ICategory> = [
     {
-      title: 'id tuyến',
+      title: 'số thứ tự',
       dataIndex: 'index',
       key: 'index',
       width: 150,

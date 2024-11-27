@@ -246,13 +246,24 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
       )
     },
     {
+      title: 'trạng thái',
+      dataIndex: 'route',
+      key: 'route',
+      width: 150,
+      render: (sizes: any) => (
+        <>
+          <p className=''>{sizes?.status}</p>
+        </>
+      )
+    },
+    {
       title: 'Tuyến xe',
       dataIndex: 'route',
       key: 'route',
       width: 150,
       filterSearch: true,
       filters: Array.from(
-        new Set(productsList?.map((item: any) => `${item.route.startProvince} - ${item.route.endProvince}`))
+        new Set(productsList?.map((item: any) => `${item?.route?.startProvince} - ${item?.route?.endProvince}`))
       ).map((route: any) => ({
         text: route,
         value: route

@@ -9,6 +9,7 @@ import { messageAlert } from '~/utils/messageAlert'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import dayjs from 'dayjs'
 
 type FormCategoryProps = {
   open: boolean
@@ -138,7 +139,11 @@ const FormCategory = ({ open }: FormCategoryProps) => {
         </Form.Item>
 
         <Form.Item label='Ngày' name='duration' rules={[{ required: true, message: 'Vui lòng chọn ngày!' }]}>
-          <DatePicker size='large' style={{ width: '100%' }} />
+          <DatePicker
+            size='large'
+            style={{ width: '100%' }}
+            disabledDate={(current) => current && current.isBefore(dayjs(), 'day')} // Disable ngày quá khứ
+            />
         </Form.Item>
 
         <Form.Item label='Trạng thái' name='status' rules={[{ required: true, message: 'Vui lòng nhập trạng thái!' }]}>

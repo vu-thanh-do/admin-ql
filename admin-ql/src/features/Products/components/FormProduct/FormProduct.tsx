@@ -222,12 +222,6 @@ const FormProduct = () => {
                 }
               ]}
             >
-              {/* <InputNumber
-                placeholder='Hệ Số giá Xe'
-                className='w-full'
-                min={1} // Đảm bảo giá trị tối thiểu là 1
-                parser={(value) => value?.replace(/[^\d]/g, '')}
-              /> */}
               <Select>
                 <Select.Option value={1}>1.0</Select.Option>
                 <Select.Option value={1.2}>1.2</Select.Option>
@@ -264,97 +258,22 @@ const FormProduct = () => {
             </Form.Item>
           </Col>
         </Row>
-        {/* <Row gutter={16}>
-          <Col span={24}>
-            {!isUpload && !isLoading && (
-              <Form.Item
-                name='images'
-                className='w-full'
-                label='Hình ảnh Xe'
-                rules={[{ required: productEdit ? false : true, message: 'Không được để trống hình ảnh Xe' }]}
-              >
-                <input type='file' onChange={(e) => handleOnChange(e)} id='thumbnail' multiple className='!hidden' />
-                <label
-                  htmlFor='thumbnail'
-                  className='rounded-xl flex-col flex items-center justify-center h-[150px] w-full gap-3 p-5 border border-gray-400 border-dashed'
-                >
-                  <p className='mx-auto text-center'>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      strokeWidth={1.5}
-                      stroke='currentColor'
-                      className='w-6 h-6 mx-auto'
-                    >
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        d='M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H6.911a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z'
-                      />
-                    </svg>
-                  </p>
-                  <p className='ant-upload-text text-center'>Tải hình ảnh</p>
-                </label>
-              </Form.Item>
-            )}
-            {isLoading && !isUpload && (
-              <div className='rounded-xl flex-col flex items-center justify-center h-[150px] w-full gap-3 p-5 border border-gray-400 border-dashed'>
-                <Loader className='bg-transparent' />
-              </div>
-            )}
-            {isUpload && !isLoading && (
-              <div className='rounded-xl flex-wrap items-center justify-center flex h-[150px] w-full gap-3 p-5 border border-gray-300 relative'>
-                {images &&
-                  images.length > 0 &&
-                  images.map((image) => (
-                    <div className='' key={image.publicId}>
-                      <div className='h-[80px] w-[80px] object-cover rounded-md'>
-                        <img src={image.url} alt='' className='object-cover w-full h-full border rounded-md shadow' />
-                      </div>
-                      <div
-                        className='top-4 left-4 absolute flex items-center justify-center w-4 h-4 cursor-pointer'
-                        onClick={() => setIsUpload(false)}
-                      >
-                        <AiOutlineCloseCircle />
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            )}
-            {productEdit && (
-              <div className='rounded-xl flex-col items-start justify-start flex h-[150px] w-full gap-3 relative'>
-                <p className='text-left'>Hoặc giữ lại ảnh cũ</p>
-                {productEdit.images.map((image) => (
-                  <div className='h-[80px] w-[80px] object-cover rounded-md' key={image.publicId}>
-                    <img
-                      src={image.url}
-                      key={image.publicId}
-                      alt={image.filename}
-                      className='object-cover w-full h-full border rounded-md shadow'
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-          </Col>
-        </Row>
         <Row gutter={16}>
-          <Col span={24}>
+          <Col span={12}>
             <Form.Item
-              name='description'
-              label='Nhập tuyến đường'
+              name='status'
+              label='rạng thái hoạt động'
               rules={[
-                {
-                  required: true,
-                  message: 'tuyến đường là bắt buộc'
-                }
+                { required: true, message: 'rạng thái hoạt động Không được bỏ trống!' },
               ]}
             >
-              <Input.TextArea rows={4} placeholder='tuyến đường' />
+              <Select defaultValue={'khai thác'}>
+                <Select.Option value={'khai thác'}>khai thác</Select.Option>
+                <Select.Option value={'ngừng khai thác'}>ngừng khai thác</Select.Option>
+              </Select>
             </Form.Item>
           </Col>
-        </Row> */}
+        </Row>
 
         <input type='submit' id='button-submit-form' value={'gửi'} className='hidden' />
       </Form>

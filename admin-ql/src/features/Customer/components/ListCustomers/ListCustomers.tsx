@@ -1,6 +1,6 @@
 import { SearchOutlined } from '@ant-design/icons'
 import type { InputRef } from 'antd'
-import { Button as ButtonAnt, Image, Input, Modal, Popconfirm, Space, Table, Tag, Tooltip } from 'antd'
+import { Button as ButtonAnt, Image, Input, Modal, Popconfirm, Select, Space, Table, Tag, Tooltip } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import type { FilterConfirmProps } from 'antd/es/table/interface'
 import { ColumnType } from 'antd/lib/table'
@@ -172,7 +172,7 @@ export const ListCustomers = () => {
       onFilter: (value: any, record: any) => {
         console.log(record, 'record')
         console.log(value, 'value')
-        return record.role  === value
+        return record.role === value
       },
       render: (phoneNumber: string) => <span>{phoneNumber}</span>
     },
@@ -180,8 +180,8 @@ export const ListCustomers = () => {
       title: 'Số điện thoại',
       dataIndex: 'phoneNumber',
       key: 'phoneNumber',
-       filterSearch: true,
-      filters: customersData?.data?.map((item :any) => ({ text: item.phoneNumber, value: item._id })),
+      filterSearch: true,
+      filters: customersData?.data?.map((item: any) => ({ text: item.phoneNumber, value: item._id })),
       onFilter: (value: any, record: any) => record._id === value,
       render: (phoneNumber: string) => <span>{phoneNumber}</span>
     },
@@ -196,10 +196,9 @@ export const ListCustomers = () => {
     {
       // title: <span className='block text-center'>Action</span>,
       key: 'action',
-      width: 200,
+      width: 300,
       render: (_: any, customer: IUser) => (
         <div className='flex items-center justify-center'>
-          <Space size='middle'>
             <Tooltip title='Cập nhật thông tin khách hàng này'>
               <ButtonAnt
                 size='large'
@@ -225,7 +224,10 @@ export const ListCustomers = () => {
                 />
               </Popconfirm>
             </Tooltip> */}
-          </Space>
+            <Select defaultValue='hoạt động'>
+              <Select.Option value='hoạt động'>hoạt động</Select.Option>
+              <Select.Option value='ngừng hoạt động'>ngừng hoạt động</Select.Option>
+            </Select>
         </div>
       )
     }

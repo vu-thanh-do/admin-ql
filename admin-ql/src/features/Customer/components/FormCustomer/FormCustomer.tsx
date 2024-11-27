@@ -37,7 +37,8 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
         email: userData.email,
         phoneNumber: userData.phoneNumber,
         fullName: userData.fullName,
-        cccd: userData.cccd
+        cccd: userData.cccd,
+        role: userData.role,
       })
   }, [userData, form])
 
@@ -51,7 +52,8 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
         phoneNumber: values.phoneNumber,
         fullName: values.fullName,
         cccd: values.cccd,
-        password: values.password
+        password: values.password,
+        role : values?.role
       })
         .unwrap()
         .then(() => {
@@ -274,9 +276,9 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
               rules={[{ required: true, message: 'Không được bỏ trống phân quyền!' }]}
             >
               <Radio.Group className='ml-2'>
-                <Radio value='admin'>Quản trị viên</Radio> <br /> <br />
-                <Radio value='user'>Nhân viên</Radio> <br /> <br />
-                <Radio value='guest'>Khách hàng</Radio>
+                <Radio value='ADMIN'>Quản trị viên</Radio> <br /> <br />
+                <Radio value='STAFF'>Nhân viên</Radio> <br /> <br />
+                <Radio value='CUSTOMER'>Khách hàng</Radio>
               </Radio.Group>
             </Form.Item>
             {!userData._id && (

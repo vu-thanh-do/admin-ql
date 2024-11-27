@@ -45,7 +45,8 @@ export const userApi = createApi({
           userName: user.userName,
           phoneNumber: user.phoneNumber,
           fullName: user.fullName,
-          cccd: user.cccd
+          cccd: user.cccd,
+          role: user.role
         }
         // credentials: 'include'
       }),
