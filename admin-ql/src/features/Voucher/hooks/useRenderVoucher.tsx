@@ -123,13 +123,7 @@ export const useRenderVoucher = () => {
       render: (name: string) => <p className=''>{name}</p>,
       ...getColumnSearchProps('code')
     },
-    {
-      title: 'Loại',
-      dataIndex: 'discountType',
-      key: 'discountType',
-      width: '15%',
-      render: (discount: number) => `${discount}`
-    },
+   
     {
       title: 'số lượng giảm giá ',
       dataIndex: 'discountAmount',

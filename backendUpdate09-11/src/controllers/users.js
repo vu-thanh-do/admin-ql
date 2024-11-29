@@ -27,8 +27,15 @@ const UserController = {
   updateProfile: async (req, res) => {
     try {
       const userId = req.user.id;
-      const { userName, phoneNumber, fullName, cccd } = req.body;
-
+      const { userName, phoneNumber, fullName, cccd, email } = req.body;
+      console.log(
+        userName,
+        phoneNumber,
+        fullName,
+        cccd,
+        email,
+        " userName, phoneNumber, fullName, cccd ,email"
+      );
       const user = await User.findByIdAndUpdate(
         userId,
         {
@@ -36,6 +43,7 @@ const UserController = {
           phoneNumber,
           fullName,
           cccd,
+          email,
         },
         { new: true }
       ).exec();
@@ -162,8 +170,8 @@ const UserController = {
   updateUser: async (req, res) => {
     try {
       const { id } = req.params;
-      const { userName, phoneNumber, fullName, cccd } = req.body;
-
+      const { userName, phoneNumber, fullName, cccd, email, role } = req.body;
+      const userRole = await Permission.findOne({ user: id });
       const user = await User.findByIdAndUpdate(
         id,
         {
@@ -171,10 +179,12 @@ const UserController = {
           phoneNumber,
           fullName,
           cccd,
+          email,
         },
         { new: true }
       );
-
+      userRole.role = role;
+      await userRole.save();
       res.json(user);
     } catch (error) {
       res.status(500).json({

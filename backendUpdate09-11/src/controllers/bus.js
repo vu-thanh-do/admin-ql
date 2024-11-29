@@ -6,7 +6,7 @@ const BusController = {
   createBus: async (req, res) => {
     try {
       // Lấy thông tin từ body request
-      const { busTypeName, seatCapacity, priceFactor, licensePlate } = req.body;
+      const { busTypeName, seatCapacity, priceFactor, licensePlate ,status} = req.body;
 
       // Kiểm tra nếu biển số đã tồn tại
       const existingBus = await Bus.findOne({ licensePlate });
@@ -20,6 +20,7 @@ const BusController = {
         seatCapacity,
         priceFactor,
         licensePlate,
+        status
       }).save();
 
       res.json(bus);
@@ -84,7 +85,7 @@ const BusController = {
   updateBus: async (req, res) => {
     try {
       const { id } = req.params;
-      const { busTypeName, seatCapacity, priceFactor, licensePlate } = req.body;
+      const { busTypeName, seatCapacity, priceFactor, licensePlate ,status} = req.body;
 
       // Cập nhật thông tin xe bus
       const bus = await Bus.findByIdAndUpdate(
@@ -94,6 +95,7 @@ const BusController = {
           seatCapacity,
           priceFactor,
           licensePlate,
+          status
         },
         { new: true }
       ).exec();

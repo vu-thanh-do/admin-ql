@@ -11,7 +11,7 @@ const CustomerFeature = () => {
 
   return (
     <div>
-      <Breadcrumb pageName='Khách hàng'>
+      <Breadcrumb pageName='Người dùng'>
         <Button icon={<PlusIcon />} onClick={() => dispatch(setOpenDrawer(true))}>
           Thêm
         </Button>

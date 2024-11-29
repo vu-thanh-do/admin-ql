@@ -85,6 +85,7 @@ const FormProduct = () => {
       form.setFieldsValue({
         route: productEdit.route?._id,
         bus: productEdit.bus?._id,
+        status : productEdit?.status,
         departureTime: productEdit?.departureTime ? moment(productEdit.departureTime) : null,
         arrivalTime: productEdit?.arrivalTime ? moment(productEdit.arrivalTime) : null
       })
@@ -95,7 +96,8 @@ const FormProduct = () => {
     productsList.route,
     productsList.arrivalTime,
     productsList.departureTime,
-    productsList.seatCapacity
+    productsList.seatCapacity,
+    productEdit?.status
   ])
   useEffect(() => {
     if (productId) {
@@ -210,7 +212,11 @@ const FormProduct = () => {
           </Col>
           <Col span={12}>
             <Form.Item name='arrivalTime' label='Giờ đến' rules={[{ required: true, message: 'Giờ đến là bắt buộc' }]}>
-              <DatePicker showTime format='YYYY-MM-DD HH:mm:ss' className='w-full'  disabledDate={(current) => {
+              <DatePicker
+                showTime
+                format='YYYY-MM-DD HH:mm:ss'
+                className='w-full'
+                disabledDate={(current) => {
                   // Disable dates before today
                   return current && current.isBefore(dayjs().startOf('day'), 'day')
                 }}
@@ -231,7 +237,8 @@ const FormProduct = () => {
                     }
                   }
                   return {} // Không vô hiệu hóa thời gian khi không phải ngày hôm nay
-                }} />
+                }}
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -240,13 +247,11 @@ const FormProduct = () => {
             <Form.Item
               name='status'
               label='trạng thái hoạt động'
-              rules={[
-                { required: true, message: 'rạng thái hoạt động Không được bỏ trống!' },
-              ]}
+              rules={[{ required: true, message: 'rạng thái hoạt động Không được bỏ trống!' }]}
             >
-              <Select defaultValue={'khai thác'}>
-                <Select.Option value={'khai thác'}>khai thác</Select.Option>
-                <Select.Option value={'ngừng khai thác'}>ngừng khai thác</Select.Option>
+              <Select defaultValue={'OPEN'}>
+                <Select.Option value={'OPEN'}>hoạt động</Select.Option>
+                <Select.Option value={'CLOSED'}>Ngừng hoạt động</Select.Option>
               </Select>
             </Form.Item>
           </Col>

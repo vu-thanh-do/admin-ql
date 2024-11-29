@@ -7,7 +7,7 @@ import Seats from "../models/seats.js";
 const TripController = {
   createTrip: async (req, res) => {
     try {
-      const { route, bus, departureTime, arrivalTime } = req.body;
+      const { route, bus, departureTime, arrivalTime ,status } = req.body;
 
       const busInfo = await Bus.findById(bus).exec();
       const busRouteInfo = await BusRoutes.findById(route).exec();
@@ -23,6 +23,7 @@ const TripController = {
         bus,
         departureTime,
         arrivalTime,
+        status
       }).save();
 
       res.json(trip);
@@ -81,7 +82,7 @@ const TripController = {
   updateTrip: async (req, res) => {
     try {
       const { id } = req.params;
-      const { route, bus, departureTime, arrivalTime } = req.body;
+      const { route, bus, departureTime, arrivalTime ,status} = req.body;
 
       const busInfo = await Bus.findById(bus).exec();
       const busRouteInfo = await BusRoutes.findById(route).exec();
@@ -99,6 +100,7 @@ const TripController = {
           bus,
           departureTime,
           arrivalTime,
+          status
         },
         { new: true }
       ).exec();

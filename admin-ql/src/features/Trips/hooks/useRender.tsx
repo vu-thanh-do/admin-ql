@@ -196,15 +196,15 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
       dataIndex: 'index',
       key: 'index',
       width: 50,
-      render: (sizes: any, itc:any) =>{
-        console.log(itc,'itcitc')
-        return  (
+      render: (sizes: any, itc: any) => {
+        console.log(itc, 'itcitc')
+        return (
           <>
             <p
               className='cursor-pointer'
               onClick={() => {
-        console.log(itc,'itcitc')
-                
+                console.log(itc, 'itcitc')
+
                 dispatch(setOpenDrawer(true))
                 dispatch(setProductDetail(itc))
               }}
@@ -245,17 +245,7 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
         </>
       )
     },
-    {
-      title: 'trạng thái',
-      dataIndex: 'route',
-      key: 'route',
-      width: 150,
-      render: (sizes: any) => (
-        <>
-          <p className=''>{sizes?.status}</p>
-        </>
-      )
-    },
+
     {
       title: 'Tuyến xe',
       dataIndex: 'route',
@@ -304,12 +294,23 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
       render: (category: ICategoryRefProduct) => <p className='capitalize'>{category}</p>
     },
     {
-      title: 'Ghế đã bán',
-      dataIndex: 'licensePlate',
-      key: 'licensePlate',
-      width: 120,
-      render: (category: ICategoryRefProduct) => <p className='capitalize'>{category}</p>
+      title: 'trạng thái',
+      dataIndex: 'status',
+      key: 'status',
+      width: 150,
+      render: (sizes: any) => (
+        <>
+          <Tag color={sizes == 'OPEN' ? 'green' : 'error'} className=''>{sizes == 'OPEN' ? 'hoạt động' : 'Ngừng hoạt động'}</Tag>
+        </>
+      )
     }
+    // {
+    //   title: 'Ghế đã bán',
+    //   dataIndex: 'licensePlate',
+    //   key: 'licensePlate',
+    //   width: 120,
+    //   render: (category: ICategoryRefProduct) => <p className='capitalize'>{category}</p>
+    // }
   ]
   /* column admin */
   /* handle delete product */
@@ -394,7 +395,7 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
                   className='bg-primary hover:text-white flex items-center justify-center text-white'
                 />
               </Tooltip>
-              <Popconfirm
+              {/* <Popconfirm
                 title='Xóa Xe?'
                 description={`Xe sẽ bị xóa'`}
                 onConfirm={() => handleDeleteProductReal(product._id)}
@@ -407,7 +408,7 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
                   danger
                   className='hover:text-white flex items-center justify-center text-white'
                 />
-              </Popconfirm>
+              </Popconfirm> */}
             </Space>
           )
         } else {

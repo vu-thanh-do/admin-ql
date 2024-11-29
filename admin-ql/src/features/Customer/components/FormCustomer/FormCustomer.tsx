@@ -73,6 +73,7 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
         .unwrap()
         .then(() => {
           messageAlert('Cập nhật thành công', 'success')
+          // window.location.reload()
           onClose()
         })
         .catch(() => {
@@ -144,10 +145,10 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
                     onChange={(e) => setOtpValue(e.target.value)}
                     className='border border-gray-300 rounded px-4 py-2 mb-4 w-full'
                   />
-                  <button onClick={handelSubmitOtp} className='bg-danger text-white px-4 py-2 rounded w-full'>
+                  <button onClick={handelSubmitOtp} className='bg-success text-white px-4 py-2 rounded w-full'>
                     TIẾP TỤC
                   </button>
-                  <button onClick={handelSubmitOtpV2} className='bg-danger text-white px-4 py-2 rounded w-full'>
+                  <button onClick={handelSubmitOtpV2} className='bg-danger text-white mt-2 px-4 py-2 rounded w-full'>
                     Gửi lại
                   </button>
                 </div>
@@ -305,7 +306,7 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
                 type='submit'
                 icon={(isAdding || isUploading || isUpdating) && <LoadingOutlined />}
               >
-                {userData._id ? 'Cập nhật' : 'Thêm khách hàng'}
+                {userData._id ? 'Cập nhật' : 'Thêm người dùng '}
               </Button>
             </Form.Item>
           </Form>

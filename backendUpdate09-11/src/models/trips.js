@@ -20,6 +20,10 @@ const tripSchema = new Schema(
       type: Date,
       required: true,
     },
+    status: {
+      type: String,
+      default: 'OPEN',
+    },
   },
   { timestamps: true }
 );

@@ -185,13 +185,12 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
     //   width: 270,
     //   ...getColumnSearchProps('busTypeName' as unknown as IProduct)
     // },
-      {
-      title: 'biển số xe',
+    {
+      title: 'Biển số xe',
       dataIndex: 'licensePlate',
       key: 'licensePlate',
-        width: 120,
       filterSearch: true,
-      filters: productsList?.map((item :any) => ({ text: item.licensePlate, value: item.licensePlate })),
+      filters: productsList?.map((item: any) => ({ text: item.licensePlate, value: item.licensePlate })),
       onFilter: (value: any, record: any) => record.licensePlate === value,
       render: (category: ICategoryRefProduct) => <p className='capitalize'>{category}</p>
     },
@@ -210,7 +209,6 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
       title: 'Số Ghế  ',
       dataIndex: 'seatCapacity',
       key: 'seatCapacity',
-      width: 180,
       render: (sizes: ISizeRefProduct[]) => (
         <>
           <p className=''>{sizes}</p>
@@ -219,7 +217,6 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
     },
     {
       title: 'Hệ số giá',
-      width: 180,
       dataIndex: 'priceFactor',
       key: 'priceFactor',
       render: (seatCapacity: any) => {
@@ -230,8 +227,20 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
         )
       }
     },
-
-
+    {
+      title: 'Trạng thái ',
+      dataIndex: 'status',
+      key: 'status',
+      render: (seatCapacity: any) => {
+        return (
+          <>
+            <Tag color={seatCapacity == 'OPEN' ? 'green' : 'error'} className=''>
+              {seatCapacity == 'OPEN' ? 'hoạt động' : 'Ngừng hoạt động'}
+            </Tag>{' '}
+          </>
+        )
+      }
+    }
   ]
 
   /* column admin */

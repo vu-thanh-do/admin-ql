@@ -136,6 +136,9 @@ const VoucherAdd = ({ open }: VoucherAddProps) => {
                 if (value < 0) {
                   return Promise.reject('Số lượng không được âm!')
                 }
+                if (value > 100) {
+                  return Promise.reject(' không được vượt quá 100!');
+                }
                 return Promise.resolve()
               }
             }

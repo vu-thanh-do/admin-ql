@@ -40,9 +40,9 @@ const FeatureProducts = ({ data }: FeatureProductsProps) => {
             Thêm
           </Button>
         )} */}
-          <Button icon={<PlusIcon />} onClick={() => dispatch(setOpenDrawer(true))}>
-            Thêm
-          </Button>
+        <Button icon={<PlusIcon />} onClick={() => dispatch(setOpenDrawer(true))}>
+          Thêm
+        </Button>
       </Breadcrumb>
       <FormProduct />
       {isAdmin && !checkPath ? (
@@ -51,8 +51,7 @@ const FeatureProducts = ({ data }: FeatureProductsProps) => {
           <FormProduct />
         </>
       ) : (
-        
-        <ProductListActive checkPath={checkPath}/>
+        <ProductListActive checkPath={checkPath} />
       )}
 
       {/* preview product */}

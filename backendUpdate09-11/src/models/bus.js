@@ -20,6 +20,10 @@ const busSchema = new Schema(
       required: true,
       unique: true,
     },
+    status: {
+      type: String,
+      default: 'OPEN',
+    },
   },
   { timestamps: true }
 );

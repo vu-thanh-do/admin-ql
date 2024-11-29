@@ -106,7 +106,8 @@ const FormProduct = () => {
         busTypeName: productEdit.busTypeName,
         seatCapacity: productEdit.seatCapacity,
         priceFactor: productEdit.priceFactor,
-        licensePlate: productEdit.licensePlate
+        licensePlate: productEdit.licensePlate,
+        status : productEdit.status
       })
     }
   }, [
@@ -115,7 +116,8 @@ const FormProduct = () => {
     productsList.busTypeName,
     productsList.licensePlate,
     productsList.priceFactor,
-    productsList.seatCapacity
+    productsList.seatCapacity,
+    productsList.status
   ])
   console.log('🚀 ~ file: FormProduct.tsx:130 ~ useEffect ~ productEdit.sizes:', productEdit)
 
@@ -199,12 +201,11 @@ const FormProduct = () => {
                 min={1} // Đảm bảo giá trị tối thiểu là 1
                 parser={(value) => value?.replace(/[^\d]/g, '')}
               /> */}
-             <Select>
+              <Select>
                 <Select.Option value={16}>16</Select.Option>
                 <Select.Option value={24}>24</Select.Option>
                 <Select.Option value={36}>36</Select.Option>
               </Select>
-
             </Form.Item>
           </Col>
         </Row>
@@ -263,18 +264,15 @@ const FormProduct = () => {
             <Form.Item
               name='status'
               label='rạng thái hoạt động'
-              rules={[
-                { required: true, message: 'rạng thái hoạt động Không được bỏ trống!' },
-              ]}
+              rules={[{ required: true, message: 'rạng thái hoạt động Không được bỏ trống!' }]}
             >
-              <Select defaultValue={'khai thác'}>
-                <Select.Option value={'khai thác'}>khai thác</Select.Option>
-                <Select.Option value={'ngừng khai thác'}>ngừng khai thác</Select.Option>
+              <Select defaultValue={'OPEN'}>
+                <Select.Option value={'OPEN'}>hoạt động</Select.Option>
+                <Select.Option value={'CLOSED'}>ngừng hoạt động</Select.Option>
               </Select>
             </Form.Item>
           </Col>
         </Row>
-
         <input type='submit' id='button-submit-form' value={'gửi'} className='hidden' />
       </Form>
     </Drawer>
