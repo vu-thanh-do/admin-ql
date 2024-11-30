@@ -41,7 +41,7 @@ const DetailOrder = ({ open }: DetailOrderProps) => {
       .then(() => {
         messageAlert('Thay đổi trạng thái thành công', 'success', 4)
         dispatch(setOrderData({ ...orderData, status: 'confirmed' }))
-     
+
         // onClose()
       })
       .catch(() => messageAlert('Thay đổi trạng thái thất bại', 'error'))
@@ -100,7 +100,7 @@ const DetailOrder = ({ open }: DetailOrderProps) => {
           <span className='text-right block font-semibold'>{formatCurrency(orderData.priceShip)}</span>
         </Col>
         <Col span={12}>
-          <span className='text-base'>Voucher:</span>
+          <span className='text-base'>Mã giảm giá:</span>
         </Col>
         <Col span={12}>
           <span className='text-right text-base block font-semibold'>

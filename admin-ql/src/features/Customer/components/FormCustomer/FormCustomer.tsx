@@ -8,7 +8,7 @@ import { LoadingOutlined } from '@ant-design/icons'
 import { RcFile } from 'antd/lib/upload'
 import UploadFile from '~/components/UploadFile'
 import { messageAlert } from '~/utils/messageAlert'
-import { setOpenDrawer } from '~/store/slices'
+import { setOpenDrawer, setUser } from '~/store/slices'
 import toast from 'react-hot-toast'
 import { useAppSelector } from '~/store/hooks'
 import axios from 'axios'
@@ -38,7 +38,7 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
         phoneNumber: userData.phoneNumber,
         fullName: userData.fullName,
         cccd: userData.cccd,
-        role: userData.role,
+        role: userData.role
       })
   }, [userData, form])
 
@@ -53,7 +53,7 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
         fullName: values.fullName,
         cccd: values.cccd,
         password: values.password,
-        role : values?.role
+        role: values?.role
       })
         .unwrap()
         .then(() => {
@@ -88,6 +88,15 @@ export const FormCustomer = ({ open }: FormCustomerProps) => {
     form.resetFields()
     dispatch(setOpenDrawer(false))
     setCheckOtp(false)
+    dispatch(
+      setUser({
+        _id: '',
+        username: '',
+        avatar: '',
+        gender: '',
+        loyalCustomers: false
+      })
+    )
   }
   const handelSubmitOtp = async () => {
     try {

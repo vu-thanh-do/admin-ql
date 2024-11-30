@@ -69,39 +69,7 @@ const DropdownUser = () => {
           dropdownOpen === true ? 'block' : 'hidden'
         }`}
       >
-        <ul className='flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark'>
-          <li>
-            <Link
-              to='/profile'
-              onClick={() => setDropdownOpen(false)}
-              className='flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base'
-            >
-              <ProfileIcon />
-              Trang cá nhân
-            </Link>
-          </li>
-          {/* <li>
-            <Link
-              to='/change-pass'
-              className='flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base'
-            >
-              <div className='w-5.5'>
-             
-                <MdLockOutline className='text-[23px]' />
-              </div>
-              Đổi mật khẩu
-            </Link>
-          </li> */}
-          {/* <li>
-            <Link
-              to='/settings'
-              className='flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base'
-            >
-              <SettingIcon />
-              Account Settings
-            </Link>
-          </li> */}
-        </ul>
+
         <button
           className='flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base'
           onClick={() => onLogout()}

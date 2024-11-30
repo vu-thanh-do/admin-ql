@@ -4,31 +4,11 @@ import PromotionController from "../controllers/promotion.js";
 
 const promotionRouter = express.Router();
 
-promotionRouter.post(
-  "/",
-  checkLogin,
-  isAdmin,
-  PromotionController.createPromotion
-);
-promotionRouter.get(
-  "/",
-  checkLogin,
-  isAdmin,
-  PromotionController.getPromotions
-);
+promotionRouter.post("/", checkLogin, PromotionController.createPromotion);
+promotionRouter.get("/", checkLogin, PromotionController.getPromotions);
 promotionRouter.get("/:id", checkLogin, PromotionController.getPromotion);
-promotionRouter.put(
-  "/:id",
-  checkLogin,
-  isAdmin,
-  PromotionController.updatePromotion
-);
-promotionRouter.delete(
-  "/:id",
-  checkLogin,
-  isAdmin,
-  PromotionController.removePromotion
-);
+promotionRouter.put("/:id", checkLogin, PromotionController.updatePromotion);
+promotionRouter.delete("/:id", checkLogin, PromotionController.removePromotion);
 promotionRouter.post(
   "/:code/apply",
   checkLogin,

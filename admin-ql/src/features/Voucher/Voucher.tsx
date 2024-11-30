@@ -21,7 +21,7 @@ const VoucherFeature = () => {
 
   return (
     <div>
-      <Breadcrumb pageName='Vouchers'>
+      <Breadcrumb pageName='Mã giảm giá'>
         {/* {user && user.role === IRoleUser.ADMIN && (
           <Button icon={<PlusIcon />} onClick={() => dispatch(setOpenDrawer(true))}>
             Thêm

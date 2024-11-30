@@ -102,7 +102,7 @@ export const useRenderVoucher = () => {
   /* staff */
   const columnsStaff = [
     {
-      title: '#',
+      title: 'Số thứ tự',
       dataIndex: 'index',
       key: 'index',
       width: 50
@@ -123,9 +123,9 @@ export const useRenderVoucher = () => {
       render: (name: string) => <p className=''>{name}</p>,
       ...getColumnSearchProps('code')
     },
-   
+
     {
-      title: 'số lượng giảm giá ',
+      title: 'Số lượng giảm giá ',
       dataIndex: 'discountAmount',
       key: 'discountAmount',
       width: '15%',

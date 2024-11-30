@@ -25,7 +25,7 @@ export const useRenderCategory = (categories: ICategory[], isDeleted?: boolean) 
   /* staff */
   const columnsStaff: ColumnsType<ICategory> = [
     {
-      title: 'số thứ tự',
+      title: 'Số thứ tự',
       dataIndex: 'index',
       key: 'index',
       width: 150,
@@ -55,11 +55,15 @@ export const useRenderCategory = (categories: ICategory[], isDeleted?: boolean) 
       title: 'Chiều dài tuyến',
       dataIndex: 'distance',
       key: 'distance',
+ render: (name: string) => <span className='capitalize'>{name} <span className='font-bold text-black'>KM</span> </span>,
+
     },
     {
-      title: 'giá mỗi km',
+      title: 'Giá mỗi km',
       dataIndex: 'pricePerKM',
       key: 'pricePerKM',
+ render: (name: string) => <span className='capitalize'>{name} <span className='font-bold text-black'>Đ</span> </span>,
+
     },
     {
       title: 'Trạng thái tuyến',
@@ -136,7 +140,7 @@ export const useRenderCategory = (categories: ICategory[], isDeleted?: boolean) 
                     }}
                   />
                 </Tooltip>
-                <Tooltip title='Xóa Tuyến đường'>
+                {/* <Tooltip title='Xóa Tuyến đường'>
                   <Popconfirm
                     title='Bạn có muốn xóa Tuyến đường này?'
                     description='Bạn chắc chắn muốn xóa Tuyến đường này?'
@@ -150,7 +154,7 @@ export const useRenderCategory = (categories: ICategory[], isDeleted?: boolean) 
                       icon={<BsFillTrashFill />}
                     />
                   </Popconfirm>
-                </Tooltip>
+                </Tooltip> */}
               </Space>
             </div>
           )

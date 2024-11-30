@@ -173,7 +173,7 @@ export const useRender = (productsList: IProduct[], deleteReal?: boolean, checkP
   /* columns staff */
   const columnsStaff: any = [
     {
-      title: '#',
+      title: 'Số thứ tự',
       dataIndex: 'index',
       key: 'index',
       width: 50
